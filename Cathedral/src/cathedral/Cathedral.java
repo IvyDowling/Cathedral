@@ -5,9 +5,8 @@ import combatsystem.*;
 
 public class Cathedral {
 
-    public static void main(String[] args) {
-        CombatSystem cs = new CombatSystem();
-        RLEngine runtime = new RLEngine();
-    }
+    RLEngine runtime = new RLEngine();
+    CombatSystem cs = new CombatSystem();
+
 
 }
