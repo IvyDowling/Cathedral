@@ -1,6 +1,7 @@
 package cathedral;
 
-import rlengine.RLEngine;
+import rlengine.*;
+import combatsystem.*;
 
 public class Cathedral {
 
