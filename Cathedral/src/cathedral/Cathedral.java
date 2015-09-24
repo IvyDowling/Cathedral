@@ -1,5 +1,7 @@
 package cathedral;
 
+import combatsystem.*;
+
 import java.awt.Canvas;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
@@ -17,6 +19,8 @@ public class Cathedral extends Canvas implements Runnable {
     private Screen screen;
     private Listener listener;
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
+    //GAME SPECIFIC
+    private CombatSystem cs;
 
     public Cathedral() {
 
@@ -41,7 +45,7 @@ public class Cathedral extends Canvas implements Runnable {
     }
 
     public void init() {
-
+        cs = new CombatSystem();
     }
 
     public synchronized void start() {
@@ -102,7 +106,6 @@ public class Cathedral extends Canvas implements Runnable {
                 frames = 0;
                 ticks = 0;
             }
-
 
         }
 
