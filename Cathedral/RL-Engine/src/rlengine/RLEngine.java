@@ -1,4 +1,4 @@
-package rlengine;
+package src.rlengine;
 
 import java.awt.Canvas;
 import java.awt.Dimension;

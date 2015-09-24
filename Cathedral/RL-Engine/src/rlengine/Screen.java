@@ -1,4 +1,4 @@
-package rlengine;
+package src.rlengine;
 
 import asciiPanel.*;
 import java.awt.Color;
@@ -14,7 +14,6 @@ public class Screen extends JPanel {
     private static AsciiPanel asciiPanel;
 
     public Screen() {
-
         this.setSize(DIMENSION);
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
         this.add(asciiPanel = new AsciiPanel(WIDTH, HEIGHT));
