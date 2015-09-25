@@ -9,9 +9,9 @@ public class Listener implements KeyListener {
     private char[] characters = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     private char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
         'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    private int lastKeyPressed;
     private boolean enabled;
     private static Screen screen;
+    private boolean debugOutput = false;
 
     public Listener() {
         screen = Screen.getInstance();
@@ -22,11 +22,12 @@ public class Listener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (enabled) {
 
-            char keyChar;
-            keyChar = e.getKeyChar();
-//            if (e.getKeyCode() == keys[0]) {
+            char keyChar = e.getKeyChar();
+//            if (keyChar == 'w') { // w
 //            }
-
+            if (debugOutput) {
+                System.out.print(keyChar);
+            }
         } else {
             for (int i = 0; i < alphabet.length; i++) {
                 if (e.getKeyChar() == alphabet[i]) {
@@ -43,8 +44,12 @@ public class Listener implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    public void Enable() {
+    public void enable() {
         enabled = true;
+    }
+
+    public void debug() {
+        debugOutput = true;
     }
 
 }

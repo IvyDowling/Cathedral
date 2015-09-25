@@ -11,7 +11,7 @@ public class Cathedral extends Canvas implements Runnable {
 
     private boolean running;
     private static final int HEIGHT = 19, WIDTH = 29, SCALE = 32;
-    private static final String NAME = "RL";
+    private static final String NAME = "Cathedral";
 
     public int tickCount = 0;
 
@@ -33,7 +33,7 @@ public class Cathedral extends Canvas implements Runnable {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(screen, null);
-        screen.addKeyListener(listener);
+        frame.addKeyListener(listener);
         frame.pack();
         frame.setPreferredSize(DIMENSION);
         frame.setResizable(true);
@@ -41,7 +41,7 @@ public class Cathedral extends Canvas implements Runnable {
         frame.setLocation(0, 0);
         frame.setVisible(true);
         frame.setSize(DIMENSION);
-
+        listener.enable();
     }
 
     public void init() {
@@ -113,6 +113,10 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void tick() {
         tickCount++;
+    }
+
+    public CombatSystem getCombatSystem() {
+        return cs;
     }
 
 }
