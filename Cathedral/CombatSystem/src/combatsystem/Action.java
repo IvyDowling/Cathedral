@@ -20,7 +20,7 @@ public abstract class Action {
 
     @Override
     public String toString() {
-        return getSpark().toString() + " with " + getTarget().toString();
+        return getSpark().toString() + " with " + getTarget().toString() + "\n";
     }
 
 }

@@ -56,4 +56,13 @@ public class CombatSystem {
         return actionQueue.isEmpty();
     }
 
+    @Override
+    public String toString() {
+        String out = "";
+        for (Action a : actionQueue) {
+            out += a.toString() + "\n";
+        }
+        return out;
+    }
+
 }

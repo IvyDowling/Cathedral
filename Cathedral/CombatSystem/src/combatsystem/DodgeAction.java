@@ -8,7 +8,7 @@ public class DodgeAction extends Action {
     
     @Override
     public String toString() {
-        return super.getSpark().toString() + " dodging";
+        return " dodging";
     }
     
     @Override

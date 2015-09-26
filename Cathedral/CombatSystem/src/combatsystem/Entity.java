@@ -87,7 +87,7 @@ public class Entity {
 
     @Override
     public String toString() {
-        return "h: " + getHeight() + " w: " + getWeight() + " str: " + strength + " dex: " + dexterity + " body state: " + body.toString() + " wpList: " + weapons.toString();
+        return "h: " + getHeight() + " w: " + getWeight() + " str: " + strength + " dex: " + dexterity + " body state: " + body.toString() + " " + weapons.toString() + "\n";
     }
 
     @Override

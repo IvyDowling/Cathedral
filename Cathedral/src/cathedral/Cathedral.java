@@ -26,6 +26,7 @@ public class Cathedral extends Canvas implements Runnable {
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
     //GAME SPECIFIC
     private CombatSystem cs;
+    private Entity player;
 
     public Cathedral() {
 
@@ -54,6 +55,7 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void init() {
         cs = new CombatSystem();
+        cs.addAction(new DodgeAction(new Entity(0, 0, 0, 0)));
     }
 
     public synchronized void start() {
@@ -120,6 +122,15 @@ public class Cathedral extends Canvas implements Runnable {
     }
 
     public void tick() {
+        //Operated Every tick
+        if (!cs.isEmpty()) {
+            System.out.println("New Action in queue");
+            Action newAction = cs.getNextAction();
+            //Action implementation code here
+            System.out.print(newAction.toString());
+        }
+
+        //tick count
         tickCount++;
     }
 

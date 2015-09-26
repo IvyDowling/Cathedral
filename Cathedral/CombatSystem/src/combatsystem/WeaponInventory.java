@@ -125,4 +125,17 @@ public class WeaponInventory {
     public Weapon[] getEquippedWeapons() {
         return equippedWeapons;
     }
+
+    @Override
+    public String toString() {
+        String out = "Inventory contains: ";
+        if (allWeapons.isEmpty()) {
+            out += "no weapons";
+        } else {
+            for (Weapon w : allWeapons) {
+                out += w.toString();
+            }
+        }
+        return out;
+    }
 }

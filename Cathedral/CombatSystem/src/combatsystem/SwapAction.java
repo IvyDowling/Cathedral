@@ -20,7 +20,7 @@ public class SwapAction extends Action {
 
     @Override
     public String toString() {
-        return super.getSpark().toString() + " switching: " + oldWeapon.toString() + " with " + newWeapon.toString();
+        return " switching: " + oldWeapon.toString() + " with " + newWeapon.toString();
     }
 
     @Override

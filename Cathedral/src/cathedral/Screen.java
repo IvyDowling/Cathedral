@@ -40,6 +40,7 @@ public class Screen extends JPanel {
         for (int i = 0; i < renderList.size(); i++) {
             asciiPanel.write(renderList.remove(i));
         }
+        this.updateGameUI();
     }
 
     public static Screen getInstance() {
@@ -51,5 +52,16 @@ public class Screen extends JPanel {
 
     public void addRender(Render r) {
         renderList.add(r);
+    }
+
+    private void updateGameUI() {
+        int i = 0;
+        int h = asciiPanel.getHeightInCharacters();
+        int w = asciiPanel.getWidthInCharacters();
+        while (i < h) {
+            asciiPanel.writeCenter("|", i);
+            asciiPanel.write("|", w - 2, i);
+            i++;
+        }
     }
 }

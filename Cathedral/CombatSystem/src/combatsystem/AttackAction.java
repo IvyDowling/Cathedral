@@ -15,7 +15,7 @@ public class AttackAction extends Action {
 
     @Override
     public String toString() {
-        return super.getSpark().toString() + " attacking " + super.getTarget().toString();
+        return " attacking";
     }
 
     @Override

@@ -21,9 +21,9 @@ public class Listener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (enabled) {
-
             char keyChar = e.getKeyChar();
-            if (keyChar == 'w') { // w
+            if (e.getKeyCode() == 37) { // up
+                ;
             }
             if (debugOutput) {
                 System.out.print(keyChar);

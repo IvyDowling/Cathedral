@@ -58,4 +58,9 @@ public class Weapon {
         }
         return 0;
     }
+    
+    @Override
+    public String toString(){
+        return "length: " + getLength() + "weight: " + getWeight() + "sharp? " + isIsSharp() + " bonus " + getSharpnessBonus();
+    }
 }

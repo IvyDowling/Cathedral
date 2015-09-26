@@ -843,6 +843,9 @@ public class AsciiPanel extends JPanel {
         return this;
     }
 
+    //
+    // I ADDED THIS ONE, CUSTOM METHOD w/ param Render
+    //
     public AsciiPanel write(Render r) {
         if (r.data == null) {
             throw new NullPointerException("string must not be null.");
