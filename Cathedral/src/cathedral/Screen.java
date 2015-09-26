@@ -64,4 +64,11 @@ public class Screen extends JPanel {
             i++;
         }
     }
+
+    public void gameIntro() {
+        asciiPanel.write("The Cathedral in the center square,", 0, 0);
+        asciiPanel.write("The Cathedral in the center square,", 0, 1);
+        asciiPanel.write("The Cathedral in the center square,", 0, 2);
+        asciiPanel.write("The Cathedral in the center square,", 0, 3);
+    }
 }

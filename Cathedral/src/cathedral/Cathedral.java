@@ -55,7 +55,8 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void init() {
         cs = new CombatSystem();
-        cs.addAction(new DodgeAction(new Entity(0, 0, 0, 0)));
+        //start intro
+        screen.gameIntro();
     }
 
     public synchronized void start() {
