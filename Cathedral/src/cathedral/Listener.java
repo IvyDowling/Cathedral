@@ -23,8 +23,8 @@ public class Listener implements KeyListener {
         if (enabled) {
 
             char keyChar = e.getKeyChar();
-//            if (keyChar == 'w') { // w
-//            }
+            if (keyChar == 'w') { // w
+            }
             if (debugOutput) {
                 System.out.print(keyChar);
             }

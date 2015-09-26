@@ -1,8 +1,11 @@
 package cathedral;
 
+import asciiPanel.Render;
 import combatsystem.*;
+import java.awt.BorderLayout;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,7 +13,7 @@ import javax.swing.JFrame;
 public class Cathedral extends Canvas implements Runnable {
 
     private boolean running;
-    private static final int HEIGHT = 19, WIDTH = 29, SCALE = 32;
+    private static final int HEIGHT = 19, WIDTH = 34, SCALE = 32;
     private static final String NAME = "Cathedral";
 
     public int tickCount = 0;
@@ -18,6 +21,8 @@ public class Cathedral extends Canvas implements Runnable {
     private JFrame frame;
     private Screen screen;
     private Listener listener;
+    private TextArea console;
+
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
     //GAME SPECIFIC
     private CombatSystem cs;
@@ -26,14 +31,17 @@ public class Cathedral extends Canvas implements Runnable {
 
         frame = new JFrame(NAME);
         screen = Screen.getInstance();
+        console = TextArea.getInstance();
         listener = new Listener();
 
         //sets personal bug
         frame.setIconImage(new ImageIcon("res/bug.png").getImage());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(screen, null);
+        frame.add(screen, BorderLayout.WEST);
+        frame.add(console, null);
         frame.addKeyListener(listener);
+
         frame.pack();
         frame.setPreferredSize(DIMENSION);
         frame.setResizable(true);
@@ -117,6 +125,10 @@ public class Cathedral extends Canvas implements Runnable {
 
     public CombatSystem getCombatSystem() {
         return cs;
+    }
+
+    public void printToConsole(String s) {
+        console.write(s);
     }
 
 }
