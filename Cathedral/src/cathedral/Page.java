@@ -1,21 +1,23 @@
 package cathedral;
 
+import asciiPanel.Render;
+import java.awt.Color;
+
 public abstract class Page {
 
-    private Chunk defaultRender;
+    private Render defaultRender;
 
-    public Page(Chunk c) {
+    public Page(Render c) {
         if (!(c == null)) {
             defaultRender = c;
         }
-
     }
 
     public Page(String[] s) {
-        defaultRender = new Chunk(s, 0, 0);
+        defaultRender = new Render(s, 0, 0, Color.BLACK, Color.WHITE);
     }
 
-    public Chunk getDefaultRender() {
+    public Render getDefaultRender() {
         return defaultRender;
     }
 }
