@@ -1,11 +1,9 @@
 package cathedral;
 
-import asciiPanel.Render;
 import combatsystem.*;
 import java.awt.BorderLayout;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,6 +22,8 @@ public class Cathedral extends Canvas implements Runnable {
     private TextArea console;
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
+    
+    public static boolean isOnIntro = false;
     //GAME SPECIFIC
     private CombatSystem cs;
     private Entity player;
@@ -56,6 +56,7 @@ public class Cathedral extends Canvas implements Runnable {
     public void init() {
         cs = new CombatSystem();
         //start intro
+        isOnIntro = true;
         screen.gameIntro();
     }
 

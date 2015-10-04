@@ -21,6 +21,9 @@ public class Listener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (enabled) {
+            if(Cathedral.isOnIntro){
+                
+            }
             char keyChar = e.getKeyChar();
             if (e.getKeyCode() == 37) { // up
                 ;

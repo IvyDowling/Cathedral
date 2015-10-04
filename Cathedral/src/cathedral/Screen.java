@@ -19,7 +19,7 @@ public class Screen extends JPanel {
     private static AsciiPanel asciiPanel;
     private List<Render> renderList = new LinkedList<Render>();
 
-    private Image testImg;
+    private boolean isOnGameScreen = false;
 
     public Screen() {
 
@@ -27,12 +27,6 @@ public class Screen extends JPanel {
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
         this.add(asciiPanel = new AsciiPanel(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
-
-        try {
-            testImg = ImageIO.read(new File("res/bug1.png"));
-        } catch (Exception ignore) {
-            System.out.println("BOO");
-        }
     }
 
     public void render() {
@@ -55,20 +49,37 @@ public class Screen extends JPanel {
     }
 
     private void updateGameUI() {
-        int i = 0;
-        int h = asciiPanel.getHeightInCharacters();
-        int w = asciiPanel.getWidthInCharacters();
-        while (i < h) {
-            asciiPanel.writeCenter("|", i);
-            asciiPanel.write("|", w - 2, i);
-            i++;
+        if (isOnGameScreen) {
+            int i = 0;
+            int h = asciiPanel.getHeightInCharacters();
+            int w = asciiPanel.getWidthInCharacters();
+            while (i < h) {
+                asciiPanel.writeCenter("|", i);
+                asciiPanel.write("|", w - 2, i);
+                i++;
+            }
         }
     }
 
     public void gameIntro() {
         asciiPanel.write("The Cathedral in the center square,", 0, 0);
-        asciiPanel.write("The Cathedral in the center square,", 0, 1);
-        asciiPanel.write("The Cathedral in the center square,", 0, 2);
-        asciiPanel.write("The Cathedral in the center square,", 0, 3);
+        asciiPanel.write("   if you defeat 10 you have gained entry.", 0, 1);
+        asciiPanel.write("(c)ontinue", 40, 10);
+        asciiPanel.write("(n)ew game", 40, 11);
+        //asciiPanel.write("(m)usic on", 20, 10);
+    }
+
+    public void takeGameIntroInput(int keyCode) {
+        //int[] keys = {37, 38, 39, 40};
+        switch (keyCode) {
+            case 37:
+                break;
+            case 38:
+                break;
+            case 39:
+                break;
+            case 40:
+                break;
+        }
     }
 }
