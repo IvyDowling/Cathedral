@@ -33,9 +33,12 @@ public class Page {
 
     public void onKeyPress(int keyCode) {
         //OVERRIDE ME PLEASE
-        if (pageInputAction != null) {
-            pageInputAction.pageAction(keyCode);
-        }
+        pageInputAction = new PageInputAction(){
+            @Override
+            public void pageAction(int keyCode) {
+                
+            }
+        };
     }
 
     public void setOnKeyPress(PageInputAction p) {

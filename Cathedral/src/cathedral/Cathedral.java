@@ -22,10 +22,11 @@ public class Cathedral extends Canvas implements Runnable {
     private TextArea console;
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
-    
+
     //GAME SPECIFIC
     private CombatSystem cs;
     private Entity player;
+    private final PageLib pageLib = new PageLib();
 
     public Cathedral() {
 
@@ -55,7 +56,7 @@ public class Cathedral extends Canvas implements Runnable {
     public void init() {
         cs = new CombatSystem();
         //start intro
-        //screen.showPage(new Page());
+        screen.showPage(pageLib.getFakePage());
     }
 
     public synchronized void start() {

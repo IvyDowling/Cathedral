@@ -27,10 +27,6 @@ public class Listener implements KeyListener {
                 System.out.print(keyChar);
             }
         } else {
-//            for (int i = 0; i < alphabet.length; i++) {
-//                if (e.getKeyChar() == alphabet[i]) {
-//                }
-//            }
         }
     }
 
