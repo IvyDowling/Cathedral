@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -17,7 +18,8 @@ public class Screen extends JPanel {
     private static final int STARTING_HEIGHT = 75, STARTING_WIDTH = 80;
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
-    private List<Render> renderList = new LinkedList<Render>();
+    private List<Render> renderList;
+    private List<Render> defaultRenderList;
 
     private boolean isOnGameScreen = false;
 
@@ -27,6 +29,9 @@ public class Screen extends JPanel {
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
         this.add(asciiPanel = new AsciiPanel(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
+
+        renderList = new LinkedList<Render>();
+        defaultRenderList = new LinkedList<Render>();
     }
 
     public void render() {
@@ -49,37 +54,19 @@ public class Screen extends JPanel {
     }
 
     private void updateGameUI() {
-        if (isOnGameScreen) {
-            int i = 0;
-            int h = asciiPanel.getHeightInCharacters();
-            int w = asciiPanel.getWidthInCharacters();
-            while (i < h) {
-                asciiPanel.writeCenter("|", i);
-                asciiPanel.write("|", w - 2, i);
-                i++;
-            }
+        for (Render r : defaultRenderList) {
+            asciiPanel.write(r);
         }
     }
 
-    public void gameIntro() {
-        asciiPanel.write("The Cathedral in the center square,", 0, 0);
-        asciiPanel.write("   if you defeat 10 you have gained entry.", 0, 1);
-        asciiPanel.write("(c)ontinue", 40, 10);
-        asciiPanel.write("(n)ew game", 40, 11);
-        //asciiPanel.write("(m)usic on", 20, 10);
+    public void showPage(Page p) {
+        defaultRenderList.clear();
+        defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
+        updateGameUI();
     }
 
-    public void takeGameIntroInput(int keyCode) {
-        //int[] keys = {37, 38, 39, 40};
-        switch (keyCode) {
-            case 37:
-                break;
-            case 38:
-                break;
-            case 39:
-                break;
-            case 40:
-                break;
-        }
+    public void distributeInput(int keyCode) {
+        //find current page and send the input
+
     }
 }

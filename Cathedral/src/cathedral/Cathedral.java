@@ -23,7 +23,6 @@ public class Cathedral extends Canvas implements Runnable {
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
     
-    public static boolean isOnIntro = false;
     //GAME SPECIFIC
     private CombatSystem cs;
     private Entity player;
@@ -56,8 +55,7 @@ public class Cathedral extends Canvas implements Runnable {
     public void init() {
         cs = new CombatSystem();
         //start intro
-        isOnIntro = true;
-        screen.gameIntro();
+        //screen.showPage(new Page());
     }
 
     public synchronized void start() {

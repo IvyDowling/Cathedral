@@ -21,21 +21,16 @@ public class Listener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (enabled) {
-            if(Cathedral.isOnIntro){
-                
-            }
             char keyChar = e.getKeyChar();
-            if (e.getKeyCode() == 37) { // up
-                ;
-            }
+            screen.distributeInput(e.getKeyCode());
             if (debugOutput) {
                 System.out.print(keyChar);
             }
         } else {
-            for (int i = 0; i < alphabet.length; i++) {
-                if (e.getKeyChar() == alphabet[i]) {
-                }
-            }
+//            for (int i = 0; i < alphabet.length; i++) {
+//                if (e.getKeyChar() == alphabet[i]) {
+//                }
+//            }
         }
     }
 
