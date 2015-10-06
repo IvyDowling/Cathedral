@@ -18,9 +18,14 @@ public class Screen extends JPanel {
     private List<Render> renderList;
     private List<Render> defaultRenderList;
 
-    private boolean isOnGameScreen = false;
+    private Page currentPage, creatorPage, mainPage;
 
     public Screen() {
+        this.currentPage = new Page();
+        this.creatorPage = new Page();
+        this.mainPage = new Page();
+        currentPage.setOnKeyPress(currentPage.getOpeningPage());
+        creatorPage.setOnKeyPress(creatorPage.getCharacterCreatorPage());
 
         this.setSize(DIMENSION);
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);

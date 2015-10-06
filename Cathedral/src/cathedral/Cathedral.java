@@ -22,7 +22,6 @@ public class Cathedral extends Canvas implements Runnable {
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
 
-    private final PageLib pageLib = new PageLib();
 
     public Cathedral() {
 
@@ -51,7 +50,7 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void init() {
         //start intro
-        screen.showPage(pageLib.getFakePage());
+//        screen.showPage();
     }
 
     public synchronized void start() {

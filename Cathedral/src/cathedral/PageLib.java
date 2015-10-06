@@ -1,24 +1,35 @@
 package cathedral;
 
-import asciiPanel.Render;
-import java.awt.Color;
+public final class PageLib {
 
-public class PageLib {
+    public static class OpeningPage implements PageInputAction {
 
-    public Page getFakePage() {
-        Render[] output = new Render[]{
-            new Render(":::", 0, 0, Color.RED, Color.PINK),
-            new Render("===", 2, 2, Color.YELLOW, Color.GREEN),
-            new Render("|||", 1, 1, Color.BLUE, Color.CYAN)
-        };
-        return new Page(output, new PageInputAction() {
-            @Override
-            public void pageAction(int keyCode) {
-                if (keyCode == 34) {
-                    
-                }
+        @Override
+        public void pageAction(int keyCode) {
+            switch (keyCode) {
+//                case 34: controller.makeNewAction();
             }
         }
-        );
+
+    }
+
+    public static class CharacterCreatorPage implements PageInputAction {
+
+        @Override
+        public void pageAction(int keyCode) {
+            switch (keyCode) {
+//                case 34: controller.makeNewAction();
+            }
+        }
+    }
+
+    public static class MainPage implements PageInputAction {
+
+        @Override
+        public void pageAction(int keyCode) {
+            switch (keyCode) {
+//                case 34: controller.makeNewAction();
+                }
+        }
     }
 }
