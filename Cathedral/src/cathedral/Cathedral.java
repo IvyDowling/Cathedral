@@ -22,13 +22,12 @@ public class Cathedral extends Canvas implements Runnable {
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
 
-
     public Cathedral() {
 
         frame = new JFrame(NAME);
         screen = Screen.getInstance();
         console = TextArea.getInstance();
-        listener = new Listener();
+        listener = new Listener().enable();
 
         //sets personal bug
         frame.setIconImage(new ImageIcon("res/bug.png").getImage());
@@ -45,12 +44,11 @@ public class Cathedral extends Canvas implements Runnable {
         frame.setLocation(0, 0);
         frame.setVisible(true);
         frame.setSize(DIMENSION);
-        listener.enable();
     }
 
     public void init() {
         //start intro
-//        screen.showPage();
+//        screen.setPage();
     }
 
     public synchronized void start() {

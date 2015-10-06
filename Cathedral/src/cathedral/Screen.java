@@ -18,14 +18,7 @@ public class Screen extends JPanel {
     private List<Render> renderList;
     private List<Render> defaultRenderList;
 
-    private Page currentPage, creatorPage, mainPage;
-
     public Screen() {
-        this.currentPage = new Page();
-        this.creatorPage = new Page();
-        this.mainPage = new Page();
-        currentPage.setOnKeyPress(currentPage.getOpeningPage());
-        creatorPage.setOnKeyPress(creatorPage.getCharacterCreatorPage());
 
         this.setSize(DIMENSION);
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
@@ -44,13 +37,6 @@ public class Screen extends JPanel {
         this.updateGameUI();
     }
 
-    public static Screen getInstance() {
-        if (screen == null) {
-            Screen screen = new Screen();
-        }
-        return screen;
-    }
-
     public void addRender(Render r) {
         renderList.add(r);
     }
@@ -61,14 +47,16 @@ public class Screen extends JPanel {
         }
     }
 
-    public void showPage(Page p) {
+    public void setPage(Page p) {
         defaultRenderList.clear();
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
         updateGameUI();
     }
 
-    public void distributeInput(int keyCode) {
-        //find current page and send the input
-
+    public static Screen getInstance() {
+        if (screen == null) {
+            Screen screen = new Screen();
+        }
+        return screen;
     }
 }

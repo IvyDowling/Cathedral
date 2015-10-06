@@ -5,24 +5,23 @@ import java.awt.event.KeyListener;
 
 public class Listener implements KeyListener {
 
-    private int[] keys = {37, 38, 39, 40};
-    private char[] characters = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    private char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-        'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private boolean enabled;
-    private static Screen screen;
+    private static Controller controller;
     private boolean debugOutput = false;
 
     public Listener() {
-        screen = Screen.getInstance();
-        enabled = false;
+        controller = Controller.getInstance();
+        enabled = true;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("input " + e.toString());
+
         if (enabled) {
             char keyChar = e.getKeyChar();
-            screen.distributeInput(e.getKeyCode());
+            System.out.println("input " + keyChar);
+            controller.takeInput(e.getKeyCode());
             if (debugOutput) {
                 System.out.print(keyChar);
             }
@@ -38,8 +37,9 @@ public class Listener implements KeyListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    public void enable() {
+    public Listener enable() {
         enabled = true;
+        return this;
     }
 
     public void debug() {
