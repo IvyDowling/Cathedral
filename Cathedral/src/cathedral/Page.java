@@ -7,6 +7,7 @@ public class Page {
 
     private Render[] defaultRender;
     private PageInputAction pageInputAction;
+    private Controller controller = Controller.getInstance();
 
     public Page(Render[] c, PageInputAction pa) {
         if (!(c == null)) {
@@ -33,10 +34,10 @@ public class Page {
 
     public void onKeyPress(int keyCode) {
         //OVERRIDE ME PLEASE
-        pageInputAction = new PageInputAction(){
+        pageInputAction = new PageInputAction() {
             @Override
             public void pageAction(int keyCode) {
-                
+
             }
         };
     }
@@ -47,5 +48,16 @@ public class Page {
 
     public PageInputAction getPageInputAction() {
         return pageInputAction;
+    }
+
+    private class OpeningPage implements PageInputAction {
+
+        @Override
+        public void pageAction(int keyCode) {
+            switch (keyCode) {
+//                case 34: controller.makeNewAction();
+            }
+        }
+
     }
 }

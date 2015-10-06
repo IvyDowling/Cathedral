@@ -1,6 +1,5 @@
 package cathedral;
 
-import combatsystem.*;
 import java.awt.BorderLayout;
 
 import java.awt.Canvas;
@@ -23,9 +22,6 @@ public class Cathedral extends Canvas implements Runnable {
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
 
-    //GAME SPECIFIC
-    private CombatSystem cs;
-    private Entity player;
     private final PageLib pageLib = new PageLib();
 
     public Cathedral() {
@@ -54,7 +50,6 @@ public class Cathedral extends Canvas implements Runnable {
     }
 
     public void init() {
-        cs = new CombatSystem();
         //start intro
         screen.showPage(pageLib.getFakePage());
     }
@@ -124,19 +119,15 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void tick() {
         //Operated Every tick
-        if (!cs.isEmpty()) {
-            System.out.println("New Action in queue");
-            Action newAction = cs.getNextAction();
-            //Action implementation code here
-            System.out.print(newAction.toString());
-        }
+//        if (!cs.isEmpty()) {
+//            System.out.println("New Action in queue");
+//            Action newAction = cs.getNextAction();
+//            //Action implementation code here
+//            System.out.print(newAction.toString());
+//        }
 
         //tick count
         tickCount++;
-    }
-
-    public CombatSystem getCombatSystem() {
-        return cs;
     }
 
     public void printToConsole(String s) {
