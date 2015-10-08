@@ -7,17 +7,19 @@ public class Controller {
     private CombatSystem cs;
     private static Controller controller = new Controller();
     private static Screen screen;
+    private static TextArea console;
 
-    private Page currentPage;
+    private static Page currentPage;
 
     private Entity self;
     private Entity currentEnemy;
 
     public Controller() {
         screen = Screen.getInstance();
+        console = TextArea.getInstance();
+
         cs = new CombatSystem();
-        currentPage = new Page(new PageLib.OpeningPage());
-        screen.setPage(currentPage);
+
     }
 
     public void makeNewAction(BodyPart bp, ActionExecution ae) {
@@ -33,8 +35,24 @@ public class Controller {
     }
 
     public void takeInput(int keyCode) {
-        System.out.println("took input " + keyCode);
-        currentPage.getPageInputAction().pageAction(keyCode);
+        console.write("input " + keyCode);
+        execute(currentPage.pageAction(keyCode));
+    }
+
+    private void execute(Command c) {
+        c.exe();
+    }
+
+    public boolean startNextAction() {
+        if (!cs.isEmpty()) {
+            cs.getNextAction();
+            return true;
+        }
+        return false;
+    }
+
+    public void printToConsole(String s) {
+        console.write(s);
     }
 
     public static Controller getInstance() {

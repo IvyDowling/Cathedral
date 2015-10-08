@@ -17,17 +17,18 @@ public class Cathedral extends Canvas implements Runnable {
 
     private JFrame frame;
     private Screen screen;
-    private Listener listener;
     private TextArea console;
 
     private final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
+
+    private Controller control = Controller.getInstance();
 
     public Cathedral() {
 
         frame = new JFrame(NAME);
         screen = Screen.getInstance();
         console = TextArea.getInstance();
-        listener = new Listener().enable();
+        frame.addKeyListener(new Listener());
 
         //sets personal bug
         frame.setIconImage(new ImageIcon("res/bug.png").getImage());
@@ -35,8 +36,6 @@ public class Cathedral extends Canvas implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(screen, BorderLayout.WEST);
         frame.add(console, null);
-        frame.addKeyListener(listener);
-
         frame.pack();
         frame.setPreferredSize(DIMENSION);
         frame.setResizable(true);
@@ -47,8 +46,9 @@ public class Cathedral extends Canvas implements Runnable {
     }
 
     public void init() {
-        //start intro
-//        screen.setPage();
+        control.printToConsole("init");
+        control.setPage(new OpeningPage());
+        control.takeInput(13);
     }
 
     public synchronized void start() {
@@ -106,6 +106,7 @@ public class Cathedral extends Canvas implements Runnable {
             if (System.currentTimeMillis() - lastTimer >= 1000) {
                 lastTimer += 1000;
                 System.out.println(frames + " " + ticks);
+                console.write("boop beep");
                 frames = 0;
                 ticks = 0;
             }
@@ -116,13 +117,9 @@ public class Cathedral extends Canvas implements Runnable {
 
     public void tick() {
         //Operated Every tick
-//        if (!cs.isEmpty()) {
-//            System.out.println("New Action in queue");
-//            Action newAction = cs.getNextAction();
-//            //Action implementation code here
-//            System.out.print(newAction.toString());
-//        }
-
+        if (control.startNextAction()) {
+            System.out.println("Action started");
+        }
         //tick count
         tickCount++;
     }
@@ -130,5 +127,4 @@ public class Cathedral extends Canvas implements Runnable {
     public void printToConsole(String s) {
         console.write(s);
     }
-
 }

@@ -19,14 +19,13 @@ public class Screen extends JPanel {
     private List<Render> defaultRenderList;
 
     public Screen() {
-
         this.setSize(DIMENSION);
         this.setBounds(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
         this.add(asciiPanel = new AsciiPanel(WIDTH, HEIGHT));
         this.setBackground(Color.BLACK);
 
-        renderList = new LinkedList<Render>();
-        defaultRenderList = new LinkedList<Render>();
+        renderList = new LinkedList<>();
+        defaultRenderList = new LinkedList<>();
     }
 
     public void render() {
@@ -48,6 +47,7 @@ public class Screen extends JPanel {
     }
 
     public void setPage(Page p) {
+        System.out.println("page set");
         defaultRenderList.clear();
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
         updateGameUI();
