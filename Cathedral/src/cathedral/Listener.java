@@ -14,10 +14,9 @@ public class Listener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        char keyChar = e.getKeyChar();
-        System.out.println("input " + keyChar);
         controller.takeInput(e.getKeyCode());
         if (debugOutput) {
+            char keyChar = e.getKeyChar();
             System.out.print(keyChar);
         }
     }

@@ -47,9 +47,7 @@ public class Cathedral extends Canvas implements Runnable {
     }
     
     public void init() {
-        control.printToConsole("init");
         control.setPage(new OpeningPage());
-        control.takeInput(13);
     }
     
     public synchronized void start() {
@@ -107,7 +105,6 @@ public class Cathedral extends Canvas implements Runnable {
             if (System.currentTimeMillis() - lastTimer >= 1000) {
                 lastTimer += 1000;
                 System.out.println(frames + " " + ticks);
-                console.write("boop beep");
                 frames = 0;
                 ticks = 0;
             }
@@ -118,7 +115,7 @@ public class Cathedral extends Canvas implements Runnable {
     
     public void tick() {
         //Operated Every tick
-        if (control.startNextAction()) {
+        if (control.fireNextAction()) {
             System.out.println("Action started");
         }
         //tick count

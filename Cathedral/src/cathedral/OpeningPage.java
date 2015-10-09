@@ -4,29 +4,15 @@ import asciiPanel.Render;
 import java.awt.Color;
 
 public class OpeningPage extends Page {
-
-    private static Controller controller;
     
-    public OpeningPage(){
-        controller = Controller.getInstance();
-    }
-
     @Override
     public Command pageAction(int key) {
         switch (key) {
-            case 13://enter
-                controller.printToConsole("Enter");
-                return new Command() {
-                    @Override
-                    public void exe() {
-                        System.out.println("well something happened");
-                    }
-                };
             default:
                 return new Command() {
                     @Override
-                    public void exe() {
-                        System.out.println("default");
+                    public void exe(Controller c) {
+                        c.setPage(new CharacterCreatorPage());
                     }
                 };
         }

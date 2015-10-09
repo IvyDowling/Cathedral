@@ -16,6 +16,7 @@ public class Screen extends JPanel {
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
     private List<Render> renderList;
+    private List<TileTransformer> animationList;
     private List<Render> defaultRenderList;
 
     public Screen() {
@@ -25,6 +26,7 @@ public class Screen extends JPanel {
         this.setBackground(Color.BLACK);
 
         renderList = new LinkedList<>();
+        animationList = new LinkedList<>();
         defaultRenderList = new LinkedList<>();
     }
 
@@ -33,11 +35,18 @@ public class Screen extends JPanel {
         for (int i = 0; i < renderList.size(); i++) {
             asciiPanel.write(renderList.remove(i));
         }
+        for (int i = 0; i < animationList.size(); i++) {
+            asciiPanel.withEachTile(animationList.remove(i));
+        }
         this.updateGameUI();
     }
 
     public void addRender(Render r) {
         renderList.add(r);
+    }
+    
+    public void addAnimation(TileTransformer t){
+        animationList.add(t);
     }
 
     private void updateGameUI() {
@@ -47,7 +56,7 @@ public class Screen extends JPanel {
     }
 
     public void setPage(Page p) {
-        System.out.println("page set");
+        asciiPanel.clear();
         defaultRenderList.clear();
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
         updateGameUI();

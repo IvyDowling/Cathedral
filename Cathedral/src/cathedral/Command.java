@@ -2,5 +2,5 @@ package cathedral;
 
 public interface Command {
 
-    public void exe();
+    public void exe(Controller c);
 }

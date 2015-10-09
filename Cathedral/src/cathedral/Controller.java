@@ -1,6 +1,8 @@
 package cathedral;
 
 import combatsystem.*;
+import asciipanel.*;
+import java.awt.Color;
 
 public class Controller {
 
@@ -17,9 +19,15 @@ public class Controller {
     public Controller() {
         screen = Screen.getInstance();
         console = TextArea.getInstance();
-
         cs = new CombatSystem();
-
+    }
+//    
+//    public void highlightArea(Color c, int x, int y, int endX, int endY){
+////        screen.addAnimation(new TileTransformer());
+//    }
+    
+    public void addRender(Render r){
+        screen.addRender(r);
     }
 
     public void makeNewAction(BodyPart bp, ActionExecution ae) {
@@ -27,7 +35,6 @@ public class Controller {
     }
 
     public void setPage(Page p) {
-        System.out.println("new page");
         if (p != null) {
             screen.setPage(p);
             currentPage = p;
@@ -35,15 +42,15 @@ public class Controller {
     }
 
     public void takeInput(int keyCode) {
-        console.write("input " + keyCode);
+        //command pattern at work
         execute(currentPage.pageAction(keyCode));
     }
 
     private void execute(Command c) {
-        c.exe();
+        c.exe(getInstance());
     }
 
-    public boolean startNextAction() {
+    public boolean fireNextAction() {
         if (!cs.isEmpty()) {
             cs.getNextAction();
             return true;
