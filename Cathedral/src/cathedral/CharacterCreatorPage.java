@@ -2,6 +2,8 @@ package cathedral;
 
 import asciiPanel.Render;
 import java.awt.Color;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CharacterCreatorPage extends Page {
 
@@ -9,30 +11,53 @@ public class CharacterCreatorPage extends Page {
     private final double HEIGHT_MIN = 5;
     private final int STR_MIN = 4;
     private final int DEX_MIN = 4;
-    private final int LIST_SIZE = 8;
-    private final int alignX = 6;
+    private final int LIST_SIZE = 7;//start at 0
+    private final int alignX = 10;
+    private final int rightAlign = 70;
 
     private int pointPool = POINT_POOL_MAX;
-    private int locationRef = 0;//+1 for move right, minus 1 move left
-    private double height = HEIGHT_MIN;
-    private int str, dex = STR_MIN;
-    private int cursorLoc = 8;
+    private double height;
+    private int str, dex;
+    private int locationRef = 0;//+1 for move down, minus 1 move up
+    private int[] weaponCount = new int[5];
+
+    private ListItem[] items;
+
+    public CharacterCreatorPage() {
+        this.items = new ListItem[8];
+        height = HEIGHT_MIN;
+        str = STR_MIN;
+        dex = DEX_MIN;
+        items[0] = new ListItem(1, "Height");
+        items[1] = new ListItem(1, "STR");
+        items[2] = new ListItem(1, "DEX");
+        items[3] = new ListItem(1, "Dagger");
+        items[4] = new ListItem(4, "Longsword");
+        items[5] = new ListItem(3, "Axe");
+        items[6] = new ListItem(3, "Hammer");
+        items[7] = new ListItem(5, "BattleAxe");
+    }
 
     @Override
     public Render[] getDefaultRender() {
         Color bg = Color.BLACK;
         Color fg = Color.WHITE;
         return new Render[]{
-            new Render(" Stats:", 4, 6, fg, bg),
-            new Render("Height -- 5 ft", alignX, 8, fg, bg),
-            new Render("Str -- 4", alignX, 9, fg, bg),
-            new Render("Dex -- 4", alignX, 10, fg, bg),
-            new Render(" Weapons:", 4, 12, fg, bg),
-            new Render("Dagger -- Length: 1 Weight: 2 Sharpness + 5", alignX, 14, fg, bg),
-            new Render("Longsword -- Length: 4 Weight: 6 Sharpness + 3", alignX, 15, fg, bg),
-            new Render("Axe -- Length: 3 Weight: 8 Sharpness + 2", alignX, 16, fg, bg),
-            new Render("Hammer -- Length: 2 Weight: 10 Sharpness + 0", alignX, 17, fg, bg),
-            new Render("Battle Axe (2H) -- Length: 4 Weight: 15 Sharpness + 2", alignX, 18, fg, bg)
+            new Render("Length Weight Sharpness Cost", alignX + 15, 7, bg, fg),
+            new Render(" Stats:", 1, 8, fg, bg),
+            new Render("Height", alignX, 8, fg, bg),
+            new Render(height + " ft", rightAlign, 8, Color.YELLOW, bg),// right
+            new Render("Str", alignX, 9, fg, bg),
+            new Render(str + " (lbs)", rightAlign, 9, Color.YELLOW, bg),// right
+            new Render("Dex", alignX, 10, fg, bg),
+            new Render("" + dex, rightAlign, 10, Color.YELLOW, bg),// right
+            new Render(" Wep:", 1, 11, fg, bg),
+            new Render("Dagger          -1-------2------ + 5 ----1", alignX, 11, fg, bg),
+            new Render("Longsword       -4-------6------ + 3 ----4", alignX, 12, fg, bg),
+            new Render("Axe             -3-------8------ + 2 ----3", alignX, 13, fg, bg),
+            new Render("Hammer          -2------10------ + 0 ----3", alignX, 14, fg, bg),
+            new Render("Battle Axe (2H) -4------15------ + 2 ----5", alignX, 15, fg, bg),
+            new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK)
         };
     }
 
@@ -40,97 +65,102 @@ public class CharacterCreatorPage extends Page {
     public Command pageAction(int key) {
         switch (key) {
             case 37://left
-                moveLeft();
+                if (moveLeft()) {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.addRender(new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE));
+                        }
+                    };
+                }
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-//                        c.printToConsole("");
-                        c.printToConsole("-1");
                     }
                 };
             case 38://up
-                moveUp();
+                if (moveUp()) {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.addRender(new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK));
+                        }
+                    };
+                }
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.addRender(new Render(">", alignX - 1, cursorLoc, Color.ORANGE, Color.BLACK));
                     }
                 };
             case 39://right
-                moveRight();
+                if (moveRight()) {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.addRender(new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE));
+                        }
+                    };
+                }
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-//                        c.printToConsole("");
-                        c.printToConsole("+1");
                     }
                 };
             case 40://down
-                moveDown();
+                if (moveDown()) {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.addRender(new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK));
+                        }
+                    };
+                }
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-//                        c.printToConsole("");
                     }
                 };
-
+            case 13: //enter
+                if (pointPool == 0) {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.setPage(new MainPage());
+                        }
+                    };
+                }
             default:
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-//                        c.printToConsole("");
                     }
-
                 };
         }
     }
 
-    private void moveRight() {
-        if (pointPool != 0) {
-            pointPool = pointPool - 1;
-            switch (locationRef) {
-                case 0:
-                    height = height + 0.5;
-                    break;
-                case 1:
-                    str = str + 2;
-                    break;
-                case 2:
-                    dex = dex + 2;
-                    break;
-                case 3:
-                    //add weapon
-                    break;
-
-            }
+    private boolean moveRight() {
+        if (pointPool >= items[locationRef].cost) {
+            items[locationRef].addPoint();
+            pointPool = pointPool - items[locationRef].cost;
+            return true;
         }
+        return false;
     }
 
-    private void moveLeft() {
+    private boolean moveLeft() {
         if (pointPool != 12) {
-            pointPool = pointPool - 1;
-            switch (locationRef) {
-                case 0:
-                    height = height + 0.5;
-                    break;
-                case 1:
-                    str = str + 2;
-                    break;
-                case 2:
-                    dex = dex + 2;
-                    break;
-                case 3:
-                    //add weapon
-                    break;
-
+            if (items[locationRef].pointsAdded > 0) {
+                items[locationRef].removePoint();
+                pointPool = pointPool + items[locationRef].cost;
+                return true;
             }
         }
+        return false;
     }
 
     private boolean moveUp() {
         if (locationRef != 0) { //top
-            locationRef = locationRef + 1;
-            cursorLoc = cursorLoc - 1;
+            locationRef = locationRef - 1;
             return true;
         }
         return false;
@@ -138,11 +168,33 @@ public class CharacterCreatorPage extends Page {
 
     private boolean moveDown() {
         if (locationRef < LIST_SIZE) { //bottom
-            locationRef = locationRef - 1;
-            cursorLoc = cursorLoc + 1;
+            locationRef = locationRef + 1;
             return true;
         }
         return false;
     }
 
+    public int[] getWeapons() {
+        return weaponCount;
+    }
+
+    private class ListItem {
+
+        int cost;
+        String name;
+        int pointsAdded;
+
+        public ListItem(int c, String s) {
+            cost = c;
+            name = s;
+        }
+
+        public void addPoint() {
+            pointsAdded = pointsAdded + cost;
+        }
+
+        public void removePoint() {
+            pointsAdded = pointsAdded + cost;
+        }
+    }
 }

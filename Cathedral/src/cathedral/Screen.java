@@ -44,9 +44,13 @@ public class Screen extends JPanel {
     public void addRender(Render r) {
         renderList.add(r);
     }
-    
-    public void addAnimation(TileTransformer t){
+
+    public void addAnimation(TileTransformer t) {
         animationList.add(t);
+    }
+
+    public void clear(int x, int y, int w, int h) {
+        asciiPanel.clear(' ', x, y, w, h);
     }
 
     private void updateGameUI() {

@@ -1,8 +1,7 @@
 package cathedral;
 
+import asciiPanel.Render;
 import combatsystem.*;
-import asciipanel.*;
-import java.awt.Color;
 
 public class Controller {
 
@@ -20,13 +19,10 @@ public class Controller {
         screen = Screen.getInstance();
         console = TextArea.getInstance();
         cs = new CombatSystem();
+        console.write("Welcome to the Cathedral");
     }
-//    
-//    public void highlightArea(Color c, int x, int y, int endX, int endY){
-////        screen.addAnimation(new TileTransformer());
-//    }
-    
-    public void addRender(Render r){
+
+    public void addRender(Render r) {
         screen.addRender(r);
     }
 
@@ -38,6 +34,7 @@ public class Controller {
         if (p != null) {
             screen.setPage(p);
             currentPage = p;
+            console.setText("");
         }
     }
 
