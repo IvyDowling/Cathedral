@@ -74,4 +74,9 @@ public class MainPage extends Page {
         " . . . . . . . . .  .BJ.      .::jN@1  . . . . . . . . . ",
         ". . . . . . . . . .   2SkYuP@BGkOEO;  . . . . . . . . . ."
     };
+
+    @Override
+    public Color getBackgroundColor() {
+        return Color.BLACK;
+    }
 }

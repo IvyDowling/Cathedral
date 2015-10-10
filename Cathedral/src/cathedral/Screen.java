@@ -44,6 +44,10 @@ public class Screen extends JPanel {
     public void addRender(Render r) {
         renderList.add(r);
     }
+    
+    public void addRender(Render[] rnd) {
+        renderList.addAll(Arrays.asList(rnd));
+    }
 
     public void addAnimation(TileTransformer t) {
         animationList.add(t);
@@ -63,6 +67,7 @@ public class Screen extends JPanel {
         asciiPanel.clear();
         defaultRenderList.clear();
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
+        asciiPanel.setBackground(p.getBackgroundColor());
         updateGameUI();
     }
 

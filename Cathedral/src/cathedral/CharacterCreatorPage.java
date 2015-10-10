@@ -18,6 +18,7 @@ public class CharacterCreatorPage extends Page {
 
     private int pointPool = POINT_POOL_MAX;
     private int locationRef = 0;//+1 for move down, minus 1 move up
+    private int cursorLocation = 8 + locationRef;
 
     private ListItem[] stats;
     private WeaponItem[] weapons;
@@ -57,7 +58,7 @@ public class CharacterCreatorPage extends Page {
     public Render[] getUpdateRender() {
         Color bg = Color.BLACK;
         Color fg = Color.YELLOW;
-        Render[] temp = new Render[8];
+        Render[] temp = new Render[10];
         temp[0] = new Render(stats[0].output() + " ft", rightAlign, 8, fg, bg);
         temp[1] = new Render(stats[1].output() + " (lbs)", rightAlign, 9, fg, bg);
         temp[2] = new Render(stats[2].output(), rightAlign, 10, fg, bg);
@@ -70,6 +71,9 @@ public class CharacterCreatorPage extends Page {
         temp[5] = new Render(weapons[2].output(), rightAlign, 13, fg, bg);
         temp[6] = new Render(weapons[3].output(), rightAlign, 14, fg, bg);
         temp[7] = new Render(weapons[4].output(), rightAlign, 15, fg, bg);
+        temp[8] = new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK);
+        temp[9] = new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE);
+
         return temp;
     }
 
@@ -77,14 +81,7 @@ public class CharacterCreatorPage extends Page {
     public Command pageAction(int key) {
         switch (key) {
             case 37://left
-                if (moveLeft()) {
-                    return new Command() {
-                        @Override
-                        public void exe(Controller c) {
-                            c.addRender(new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE));
-                        }
-                    };
-                }
+                moveLeft();
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
@@ -95,8 +92,7 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
-                            c.clear(alignX - 1, 8, 1, 8);
-                            c.addRender(new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK));
+                            c.clear(alignX - 1, 8, 1, 8);// cleanup old cursors
                         }
                     };
                 }
@@ -106,14 +102,7 @@ public class CharacterCreatorPage extends Page {
                     }
                 };
             case 39://right
-                if (moveRight()) {
-                    return new Command() {
-                        @Override
-                        public void exe(Controller c) {
-                            c.addRender(new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE));
-                        }
-                    };
-                }
+                moveRight();
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
@@ -124,8 +113,7 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
-                            c.clear(alignX - 1, 8, 1, 8);
-                            c.addRender(new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK));
+                            c.clear(alignX - 1, 8, 1, 8); // cleanup old cursors
                         }
                     };
                 }
@@ -135,7 +123,7 @@ public class CharacterCreatorPage extends Page {
                     }
                 };
             case 32: // spaceBar
-            case 13: //enter
+            case 13: // enter
                 if (pointPool == 0) {
                     return new Command() {
                         @Override
@@ -144,6 +132,13 @@ public class CharacterCreatorPage extends Page {
                         }
                     };
                 }
+            case 27: // esc
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.setPage(new OpeningPage());
+                    }
+                };
             default:
                 return new Command() {
                     @Override
@@ -245,6 +240,11 @@ public class CharacterCreatorPage extends Page {
             }
         }
         return new Entity(getHeight(), getWeight(), getStr(), getDex(), wep);
+    }
+
+    @Override
+    public Color getBackgroundColor() {
+        return Color.LIGHT_GRAY;
     }
 
     //

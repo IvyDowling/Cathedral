@@ -42,8 +42,9 @@ public class Controller {
 
     public void setPage(Page p) {
         if (p != null) {
-            screen.setPage(p);
             currentPage = p;
+            screen.setPage(p);
+            updateDynamicPageContent();
             console.setText("");
         }
     }
