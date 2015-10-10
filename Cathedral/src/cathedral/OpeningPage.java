@@ -5,14 +5,51 @@ import java.awt.Color;
 
 public class OpeningPage extends Page {
 
+    private boolean top = true; //cursor starts on the continue
+
     @Override
     public Command pageAction(int key) {
         switch (key) {
+            case 38://up                
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        if (!top) {
+                            c.clear(29, 10, 1, 2);
+                            top = true;
+                        }
+                    }
+                };
+            case 40://down
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        if (top) {
+                            c.clear(29, 10, 1, 2);
+                            top = false;
+                        }
+                    }
+                };
+            case 32: // spaceBar
+                System.out.println("exe");
+                if (top) { //CONTINUE -> LOAD SAVE
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
+                            c.loadSave();
+                        }
+                    };
+                }
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.saveGame();
+                    }
+                };
             default:
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.setPage(new CharacterCreatorPage());
                     }
                 };
         }
@@ -20,8 +57,13 @@ public class OpeningPage extends Page {
 
     @Override
     public Render[] getUpdateRender() {
+        if (top) {
+            return new Render[]{
+                new Render(">", 29, 10, Color.ORANGE, Color.BLACK)
+            };
+        }
         return new Render[]{
-            new Render(" ", 15, 15, Color.YELLOW, Color.BLACK)
+            new Render(">", 29, 11, Color.ORANGE, Color.BLACK)
         };
     }
 

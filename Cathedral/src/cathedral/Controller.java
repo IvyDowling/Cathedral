@@ -2,6 +2,15 @@ package cathedral;
 
 import asciiPanel.Render;
 import combatsystem.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller {
 
@@ -73,6 +82,29 @@ public class Controller {
 
     public void printToConsole(String s) {
         console.write(s);
+    }
+
+    public boolean saveGame() {
+        try {
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("sv.dat"))) {
+                oos.writeObject(this);
+            }
+        } catch (IOException ioex) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean loadSave() {
+        try {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sv.dat"))) {
+                controller = (Controller) ois.readObject();
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+
     }
 
     public static Controller getInstance() {

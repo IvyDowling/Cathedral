@@ -123,7 +123,6 @@ public class CharacterCreatorPage extends Page {
                     }
                 };
             case 32: // spaceBar
-            case 13: // enter
                 if (pointPool == 0) {
                     return new Command() {
                         @Override
