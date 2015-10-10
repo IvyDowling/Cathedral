@@ -2,10 +2,11 @@ package combatsystem;
 
 public class Body {
 
-    private int height, weight;
+    private double height;
+    private int weight;
     BodyPart lArm, rArm, lLeg, rLeg, torso;
 
-    public Body(int h, int w) {
+    public Body(double h, int w) {
         height = h;
         weight = w;
         lArm = new BodyPart(BodyComponent.LARM);
@@ -32,7 +33,7 @@ public class Body {
         }
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 

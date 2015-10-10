@@ -4,7 +4,7 @@ import asciiPanel.Render;
 import java.awt.Color;
 
 public class OpeningPage extends Page {
-    
+
     @Override
     public Command pageAction(int key) {
         switch (key) {
@@ -16,6 +16,13 @@ public class OpeningPage extends Page {
                     }
                 };
         }
+    }
+
+    @Override
+    public Render[] getUpdateRender() {
+        return new Render[]{
+            new Render(" Cathedral ", 5, 5, Color.BLACK, Color.CYAN)
+        };
     }
 
     @Override

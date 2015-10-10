@@ -16,4 +16,12 @@ public class Render {
         background = bk;
     }
     
+    public Render(char s,int x, int y, Color fore, Color bk){
+        data = s + "";
+        this.x = x;
+        this.y = y;
+        foreground = fore;
+        background = bk;
+    }
+    
 }

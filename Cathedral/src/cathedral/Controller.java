@@ -26,6 +26,16 @@ public class Controller {
         screen.addRender(r);
     }
 
+    public void updateDynamicPageContent() {
+        for (Render r : currentPage.getUpdateRender()) {
+            screen.addRender(r);
+        }
+    }
+
+    public void clear(int x, int y, int w, int h) {
+        screen.clear(x, y, w, h);
+    }
+
     public void makeNewAction(BodyPart bp, ActionExecution ae) {
         cs.addAction(new Action(self, currentEnemy, bp, ae));
     }
@@ -43,8 +53,13 @@ public class Controller {
         execute(currentPage.pageAction(keyCode));
     }
 
+    public Page getCurrentPage() {
+        return currentPage;
+    }
+
     private void execute(Command c) {
         c.exe(getInstance());
+        updateDynamicPageContent();
     }
 
     public boolean fireNextAction() {

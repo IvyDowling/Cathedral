@@ -118,6 +118,7 @@ public class Cathedral extends Canvas implements Runnable {
         if (control.fireNextAction()) {
             System.out.println("Action started");
         }
+//        control.updateDynamicPageContent();
         //tick count
         tickCount++;
     }
