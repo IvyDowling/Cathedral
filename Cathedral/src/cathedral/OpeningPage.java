@@ -110,7 +110,7 @@ public class OpeningPage extends Page {
 
     @Override
     public Color getBackgroundColor() {
-        return Color.LIGHT_GRAY;
+        return Color.BLACK;
     }
 
     @Override
