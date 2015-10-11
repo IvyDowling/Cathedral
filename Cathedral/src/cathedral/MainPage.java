@@ -2,10 +2,14 @@ package cathedral;
 
 import asciiPanel.Render;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 public class MainPage extends Page {
 
     private Viewer viewer;
+    private Render[] currentRender;
 
     public MainPage() {
         viewer = new Viewer();
@@ -16,7 +20,7 @@ public class MainPage extends Page {
                 .addRenderArray(toRenderArray(img5, Color.CYAN, Color.BLACK))
                 .addRenderArray(toRenderArray(img6, Color.CYAN, Color.BLACK))
                 .addRenderArray(toRenderArray(img7, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img8, Color.CYAN, Color.BLACK));
+                .addRenderArray(toRenderArray(img8, Color.BLUE, Color.WHITE));
     }
 
     @Override
@@ -28,7 +32,7 @@ public class MainPage extends Page {
     public Render[] getUpdateRender() {
         if (viewer.isPlaying()) {
             //viewer render
-            return viewer.getCurrentRender();
+            return currentRender = viewer.getCurrentRender();
         } else {
             return toRenderArray(new String[]{"o0o"}, 60, 30, Color.RED, Color.BLACK);
         }

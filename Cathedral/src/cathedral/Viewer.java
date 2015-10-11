@@ -1,19 +1,22 @@
 package cathedral;
 
 import asciiPanel.Render;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.Timer;
 
 public class Viewer {
 
     private final List<Render[]> vid;
     private int index;
     private boolean isPlaying;
-    private int timer;
+    private final int DELAY = 1000; //milliseconds
 
     public Viewer() {
         vid = new LinkedList<>();
-        index = timer = 0;
+        index = 0;
         isPlaying = false;
     }
 
@@ -25,11 +28,8 @@ public class Viewer {
         if (index == vid.size()) {
             isPlaying = false;
         }
-        timer++;
-        if (isPlaying && timer < 1000) {
-            System.out.println(index);
-            timer = 0;
-            return vid.get(index++);
+        if (isPlaying) {
+            return vid.get(index);
         }
         return null;
     }
@@ -43,12 +43,32 @@ public class Viewer {
         vid.addAll(r);
         return this;
     }
-    
-    public void play(){
+
+    public void play() {
         isPlaying = true;
+        ActionListener taskPerformer = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                nextFrame();
+                System.out.println(index);
+            }
+        };
+        new Timer(DELAY, taskPerformer).start();
+    }
+
+    public void stop() {
+        isPlaying = false;
     }
 
     public boolean isPlaying() {
         return isPlaying;
+    }
+
+    public void nextFrame() {
+        if (index < vid.size()) {
+            index++;
+        } else {
+            this.stop();
+        }
     }
 }

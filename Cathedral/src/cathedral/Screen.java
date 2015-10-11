@@ -66,8 +66,8 @@ public class Screen extends JPanel {
     public void setPage(Page p) {
         asciiPanel.clear();
         defaultRenderList.clear();
+        asciiPanel.setDefaultBackgroundColor(p.getBackgroundColor());
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
-        asciiPanel.setBackground(p.getBackgroundColor());
         updateGameUI();
     }
 
