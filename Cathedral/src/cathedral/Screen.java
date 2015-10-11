@@ -44,7 +44,7 @@ public class Screen extends JPanel {
     public void addRender(Render r) {
         renderList.add(r);
     }
-    
+
     public void addRender(Render[] rnd) {
         renderList.addAll(Arrays.asList(rnd));
     }

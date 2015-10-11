@@ -246,6 +246,11 @@ public class CharacterCreatorPage extends Page {
         return Color.LIGHT_GRAY;
     }
 
+    @Override
+    public void playViewer() {
+        //no cutscene
+    }
+
     //
     //LIST ITEM CLASS
     //

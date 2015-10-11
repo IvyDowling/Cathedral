@@ -2,15 +2,12 @@ package cathedral;
 
 import asciiPanel.Render;
 import combatsystem.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Controller {
 
@@ -20,9 +17,11 @@ public class Controller {
     private static TextArea console;
 
     private static Page currentPage;
+    private Render[] lastUpdate;
 
     private Entity self;
     private Entity currentEnemy;
+    private Save save;
 
     public Controller() {
         screen = Screen.getInstance();
@@ -36,8 +35,11 @@ public class Controller {
     }
 
     public void updateDynamicPageContent() {
-        for (Render r : currentPage.getUpdateRender()) {
-            screen.addRender(r);
+        if (lastUpdate != currentPage.getUpdateRender()) {
+            lastUpdate = currentPage.getUpdateRender();
+            for (Render r : lastUpdate) {
+                screen.addRender(r);
+            }
         }
     }
 
@@ -55,6 +57,7 @@ public class Controller {
             screen.setPage(p);
             updateDynamicPageContent();
             console.setText("");
+            this.saveGame();
         }
     }
 
@@ -86,10 +89,13 @@ public class Controller {
 
     public boolean saveGame() {
         try {
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("sv.dat"))) {
-                oos.writeObject(this);
-            }
-        } catch (IOException ioex) {
+            File f = new File("sv.dat");
+            f.delete();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("sv.dat"));
+            oos.writeUnshared(save);
+
+        } catch (IOException io) {
+            System.out.println("Failed to save File");
             return false;
         }
         return true;
@@ -98,13 +104,28 @@ public class Controller {
     public boolean loadSave() {
         try {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sv.dat"))) {
-                controller = (Controller) ois.readObject();
+                save = (Save) ois.readObject();
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            System.out.println("couldn't load file: io\n" + ex);
+            return false;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("couldn't load file class\n" + ex);
             return false;
         }
+        //assign save data
+        if (save != null) {
+            self = save.getEntity();
+            gotoEnemy(save.enemyNumber);
+        } else {
+            System.out.println("SAVE DATA NULL");
+        }
         return true;
+    }
 
+    private void gotoEnemy(int enemyNum) {
+        //non-impl code
+        currentEnemy = self;
     }
 
     public static Controller getInstance() {

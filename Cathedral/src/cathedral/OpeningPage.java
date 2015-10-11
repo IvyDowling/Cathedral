@@ -2,6 +2,8 @@ package cathedral;
 
 import asciiPanel.Render;
 import java.awt.Color;
+import java.io.File;
+import java.net.URL;
 
 public class OpeningPage extends Page {
 
@@ -31,7 +33,6 @@ public class OpeningPage extends Page {
                     }
                 };
             case 32: // spaceBar
-                System.out.println("exe");
                 if (top) { //CONTINUE -> LOAD SAVE
                     return new Command() {
                         @Override
@@ -43,7 +44,7 @@ public class OpeningPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.saveGame();
+                        c.setPage(new CharacterCreatorPage());
                     }
                 };
             default:
@@ -79,8 +80,14 @@ public class OpeningPage extends Page {
         };
         Color fg = Color.BLUE;
         Color bg = Color.LIGHT_GRAY;
+        Color continueColor = Color.GRAY;
+
+        if (isThereAFile()) {
+            continueColor = Color.YELLOW;
+        }
+
         return new Render[]{
-            new Render("(c)ontinue", 30, 10, Color.CYAN, Color.BLACK),
+            new Render("(c)ontinue", 30, 10, continueColor, Color.BLACK),
             new Render("(n)ew game", 30, 11, Color.CYAN, Color.GRAY),
             new Render(cathedral[0], 0, 0, fg, bg),
             new Render(cathedral[1], 0, 1, fg, bg),
@@ -91,9 +98,24 @@ public class OpeningPage extends Page {
         };
     }
 
+    private boolean isThereAFile() {
+        try {
+            URL path = OpeningPage.class.getResource("sv.dat");
+            File f = new File(path.getFile());
+            return f.canRead();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     public Color getBackgroundColor() {
         return Color.LIGHT_GRAY;
+    }
+
+    @Override
+    public void playViewer() {
+        //no cutscene
     }
 
 }

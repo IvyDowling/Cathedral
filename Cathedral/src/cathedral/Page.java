@@ -12,5 +12,7 @@ public abstract class Page {
     public abstract Render[] getUpdateRender();
 
     public abstract Command pageAction(int key);
+    
+    public abstract void playViewer();
 
 }

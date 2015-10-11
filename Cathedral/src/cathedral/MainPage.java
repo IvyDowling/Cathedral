@@ -5,31 +5,47 @@ import java.awt.Color;
 
 public class MainPage extends Page {
 
-    @Override
-    public Render[] getDefaultRender() {
-        Render[] temp = new Render[img.length];
-        for (int i = 0; i < img.length; i++) {
-            temp[i] = new Render(img[i], 0, i, Color.CYAN, Color.BLACK);
-        }
-        return temp;
+    private Viewer viewer;
+
+    public MainPage() {
+        viewer = new Viewer();
+        viewer.addRenderArray(toRenderArray(img1, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img2, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img3, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img4, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img5, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img6, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img7, Color.CYAN, Color.BLACK))
+                .addRenderArray(toRenderArray(img8, Color.CYAN, Color.BLACK));
     }
 
-    int i = 0;
+    @Override
+    public Render[] getDefaultRender() {
+        return toRenderArray(new String[]{"ooo"}, 30, 30, Color.CYAN, Color.BLACK);
+    }
 
     @Override
     public Render[] getUpdateRender() {
-        Color c = new Color(255, 0, i);
-        i++;
-        if (i == 255) {
-            i = 0;
+        if (viewer.isPlaying()) {
+            //viewer render
+            return viewer.getCurrentRender();
+        } else {
+            return toRenderArray(new String[]{"o0o"}, 60, 30, Color.RED, Color.BLACK);
         }
-        return new Render[]{
-            new Render("beep", 36, 12, c, Color.RED)
-        };
     }
 
     @Override
     public Command pageAction(int key) {
+        switch (key) {
+            case 32:
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.printToConsole("play!");
+                        c.getCurrentPage().playViewer();
+                    }
+                };
+        }
         return new Command() {
             @Override
             public void exe(Controller c) {
@@ -38,45 +54,76 @@ public class MainPage extends Page {
         };
     }
 
-    private String[] img = new String[]{
+    private String[] boop = new String[]{
         " . . . . . . .:r,. ..,.. ..:,:.,,iiLUZM@OL   . . . . . . ",
         ". . . . . . ii, ... . . . . :.:,:,::rvFX@M@v    . . . . .",
         " . . . . . 7:  ,.. . . . . . . . ,:i:rYXXOM@B:   . . . . ",
-        ". . . . . 7.  :.. . . . . . . . . .,i:7ukNOZ@B. . . . . .",
+        ". . . . . 7.  :.. . . . . . . . . .,i:7ukNOZ@B. . . . . .                     lasdajwd",
         ".. . . . 7. .:,, . . . . . . . ....,.irL1MG8q@G  . . . . ",
         ". . . . :i .:::.. . . . . . . ..,.:,i:7vXM@kFjBY  . . . .",
         " . . . .r. ,ii:: . . . . . . . ,.::iir7S8@MPv7UM   . . . ",
         ". . . ..v .,i:;.. . . . . . . . ..::77PZBGMj7r7qL . . . .",
-        " . . . ,; .:.ii: . . . . . ,.    ,,ivFPBZOZLju,JX  . . . ",
+        " . . . ,; .:.ii: . .HELLOHELLOHELLOivFPBZOZLju,JX  . . . ",
         ". . . ..7 rUU :,.       ..,.,.,,::7JXSPXOXZY@SiLM   . . .",
         " . . . .; iMB.   . :ir:::;:i:::i7qE8Pquui7JuB0rFZ  . . . ",
         ". . . . 7 iM@ .7MM@M@B@XS5jLFPXG@E@B@B@BML::@ZJqZ . . . .",
         " . . . .i::@i7B@M@B@M@M@B@18B@S@uEBBB@B@M@0;kB2BJ  . . . ",
-        ". . . . i:rjr8MB@MOGMB@B8UrMXZX87B@B@8@M@BMqqOMB: . . . .",
-        ".. . . ..i:2uGNBB@M@B@BP,.:r.k1ur@BO8@O@MF.OkMO0   . . . ",
-        ". . . .  ::LrG@5MM@B@0i      .UL7k@M@B@O7 :BNO@i  . . . .",
-        " . . . . .7,.iOq7Y;r    .  1PZ7uUJ;uNOX, ;O8E@M  . . . . ",
-        ". . . .  .Mi:..:i,    uBr.@BEB@FMM1.. ..ruOBNO@   . . . .",
-        " . . . . L:vqvr2u5UY7@BY @B@78M@SMBFLU7JJqMGPMB@ . . . . ",
-        ". . . .  7Fi2U1POB@B@Bq rM@PrFZMMP@M@B@M@O0UN0@5  . . . .",
-        ".. . . .  u@BOPjrYq@Gui:i@B@i5M@FXBMPP5NuJX@B@S  . . . . ",
-        ". . . . .  .iJkM@B@Gjiii L@B.7@OY:@B8YvU8OBGL,  . . . . .",
-        ".. . . . .    .rO@BZrr7r,    @X2u 8@urZ@MBv:   . . . . . ",
-        ". . . . . . . i.UB@O:,u.:   75u:7 LBvr@BZN5   . . . . . .",
-        " . . . . . .  ,i.,M@rr;.    .  .   M:5B1MS7  . . . . . . ",
-        ". . . . . . . :i. iBM0O5Mquik7F11UFkGPZBMvL . . . . . . .",
-        " . . . . . . .:: . uBB5UUYq:Oi7@:MLXFuG@FLv  . . . . . . ",
-        ". . . . . . . ,i :  ruY0N:ZYZ7LrvrULS0@OLrL . . . . . . .",
-        " . . . . . . . rJFr: iFUOLu2SuFJk1UEN@O2r5.  . . . . . . ",
-        ". . . . . . . . 7B@8U:uqOEXOBMBZ88OOBOZY7   . . . . . . .",
-        " . . . . . . .   .Y@Xv:iYOB@B@M@MMEGqBv.   . . . . . . . ",
-        ". . . . . . . .    ,Mi   :u222GSXu1N@v  . . . . . . . . .",
-        " . . . . . . . . .  .BJ.      .::jN@1  . . . . . . . . . ",
-        ". . . . . . . . . .   2SkYuP@BGkOEO;  . . . . . . . . . ."
+        ". . . . i:rjr8MB@MOGMB@B8UrMXZX87B@B@8@M@BMqqOMB: . . . .",};
+
+    private String[] img1 = new String[]{
+        "."
     };
+
+    private String[] img2 = new String[]{
+        " ."
+    };
+
+    private String[] img3 = new String[]{
+        "  ."
+    };
+
+    private String[] img4 = new String[]{
+        "   ."
+    };
+    private String[] img5 = new String[]{
+        "     ."
+    };
+
+    private String[] img6 = new String[]{
+        "         ."
+    };
+
+    private String[] img7 = new String[]{
+        "              ."
+    };
+
+    private String[] img8 = new String[]{
+        "                         ."
+    };
+
+    private Render[] toRenderArray(String[] s, Color fg, Color bg) {
+        Render[] temp = new Render[s.length];
+        for (int i = 0; i < s.length; i++) {
+            temp[i] = new Render(s[i], 0, i, fg, bg);
+        }
+        return temp;
+    }
+
+    private Render[] toRenderArray(String[] s, int x, int y, Color fg, Color bg) {
+        Render[] temp = new Render[s.length];
+        for (int i = 0; i < s.length; i++) {
+            temp[i] = new Render(s[i], x, i + y, fg, bg);
+        }
+        return temp;
+    }
 
     @Override
     public Color getBackgroundColor() {
         return Color.BLACK;
+    }
+
+    @Override
+    public void playViewer() {
+        viewer.play();
     }
 }
