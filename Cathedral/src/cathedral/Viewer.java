@@ -10,18 +10,24 @@ import javax.swing.Timer;
 public class Viewer {
 
     private final List<Render[]> vid;
-    private int index;
-    private boolean isPlaying;
-    private final int DELAY = 1000; //milliseconds
+    private int index = 0;
+    private boolean isPlaying, isFinished;
+    private int delay = 1000; //milliseconds
+
+    public Viewer(int milliDelay) {
+        vid = new LinkedList<>();
+        isPlaying = isFinished = false;
+        delay = milliDelay;
+    }
 
     public Viewer() {
         vid = new LinkedList<>();
-        index = 0;
         isPlaying = false;
     }
 
     public Viewer(List<Render[]> v) {
         vid = v;
+        isPlaying = false;
     }
 
     public Render[] getCurrentRender() {
@@ -31,7 +37,7 @@ public class Viewer {
         if (isPlaying) {
             return vid.get(index);
         }
-        return null;
+        return VideoLib.getEmptyRender();
     }
 
     public Viewer addRenderArray(Render[] r) {
@@ -50,18 +56,22 @@ public class Viewer {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 nextFrame();
-                System.out.println(index);
             }
         };
-        new Timer(DELAY, taskPerformer).start();
+        new Timer(delay, taskPerformer).start();
     }
 
     public void stop() {
         isPlaying = false;
+        isFinished = true;
     }
 
     public boolean isPlaying() {
         return isPlaying;
+    }
+    
+    public boolean isFinished(){
+        return isFinished;
     }
 
     public void nextFrame() {

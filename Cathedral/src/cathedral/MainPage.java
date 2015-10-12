@@ -2,9 +2,8 @@ package cathedral;
 
 import asciiPanel.Render;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainPage extends Page {
 
@@ -13,19 +12,24 @@ public class MainPage extends Page {
 
     public MainPage() {
         viewer = new Viewer();
-        viewer.addRenderArray(toRenderArray(img1, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img2, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img3, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img4, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img5, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img6, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img7, Color.CYAN, Color.BLACK))
-                .addRenderArray(toRenderArray(img8, Color.BLUE, Color.WHITE));
+        viewer.addRenderArray(VideoLib.getIntroCutscene());
     }
 
     @Override
     public Render[] getDefaultRender() {
-        return toRenderArray(new String[]{"ooo"}, 30, 30, Color.CYAN, Color.BLACK);
+        List<Render> temp = new LinkedList<>();
+        char bar = '\u00B3';
+        for (int i = 0; i < 35; i++) {
+            temp.add(new Render(bar, 0, i, Color.WHITE, Color.BLACK));
+            temp.add(new Render(bar, 41, i, Color.WHITE, Color.BLACK));
+            temp.add(new Render(bar, 80, i, Color.WHITE, Color.BLACK));
+
+        }
+        Render[] ret = new Render[temp.size()];
+        for(int i = 0; i < temp.size(); i++){
+            ret[i] = temp.get(i);
+        }
+        return ret;
     }
 
     @Override
@@ -34,12 +38,13 @@ public class MainPage extends Page {
             //viewer render
             return currentRender = viewer.getCurrentRender();
         } else {
-            return toRenderArray(new String[]{"o0o"}, 60, 30, Color.RED, Color.BLACK);
+            return getDefaultRender();
         }
     }
 
     @Override
-    public Command pageAction(int key) {
+    public Command pageAction(int key
+    ) {
         switch (key) {
             case 32:
                 return new Command() {
@@ -56,61 +61,6 @@ public class MainPage extends Page {
                 c.printToConsole("does nothing");
             }
         };
-    }
-
-    private String[] boop = new String[]{
-        " . . . . . . .:r,. ..,.. ..:,:.,,iiLUZM@OL   . . . . . . ",
-        ". . . . . . ii, ... . . . . :.:,:,::rvFX@M@v    . . . . .",
-        " . . . . . 7:  ,.. . . . . . . . ,:i:rYXXOM@B:   . . . . ",
-        ". . . . . 7.  :.. . . . . . . . . .,i:7ukNOZ@B. . . . . .                     lasdajwd",
-        ".. . . . 7. .:,, . . . . . . . ....,.irL1MG8q@G  . . . . ",
-        ". . . . :i .:::.. . . . . . . ..,.:,i:7vXM@kFjBY  . . . .",
-        " . . . .r. ,ii:: . . . . . . . ,.::iir7S8@MPv7UM   . . . ",
-        ". . . ..v .,i:;.. . . . . . . . ..::77PZBGMj7r7qL . . . .",
-        " . . . ,; .:.ii: . .HELLOHELLOHELLOivFPBZOZLju,JX  . . . ",
-        ". . . ..7 rUU :,.       ..,.,.,,::7JXSPXOXZY@SiLM   . . .",
-        " . . . .; iMB.   . :ir:::;:i:::i7qE8Pquui7JuB0rFZ  . . . ",
-        ". . . . 7 iM@ .7MM@M@B@XS5jLFPXG@E@B@B@BML::@ZJqZ . . . .",
-        " . . . .i::@i7B@M@B@M@M@B@18B@S@uEBBB@B@M@0;kB2BJ  . . . ",
-        ". . . . i:rjr8MB@MOGMB@B8UrMXZX87B@B@8@M@BMqqOMB: . . . .",};
-
-    private String[] img1 = new String[]{
-        "."
-    };
-
-    private String[] img2 = new String[]{
-        " ."
-    };
-
-    private String[] img3 = new String[]{
-        "  ."
-    };
-
-    private String[] img4 = new String[]{
-        "   ."
-    };
-    private String[] img5 = new String[]{
-        "     ."
-    };
-
-    private String[] img6 = new String[]{
-        "         ."
-    };
-
-    private String[] img7 = new String[]{
-        "              ."
-    };
-
-    private String[] img8 = new String[]{
-        "                         ."
-    };
-
-    private Render[] toRenderArray(String[] s, Color fg, Color bg) {
-        Render[] temp = new Render[s.length];
-        for (int i = 0; i < s.length; i++) {
-            temp[i] = new Render(s[i], 0, i, fg, bg);
-        }
-        return temp;
     }
 
     private Render[] toRenderArray(String[] s, int x, int y, Color fg, Color bg) {

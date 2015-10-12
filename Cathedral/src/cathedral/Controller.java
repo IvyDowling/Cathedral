@@ -55,7 +55,6 @@ public class Controller {
         if (p != null) {
             currentPage = p;
             screen.setPage(p);
-            updateDynamicPageContent();
             console.setText("");
             this.saveGame();
         }
@@ -66,15 +65,15 @@ public class Controller {
         execute(currentPage.pageAction(keyCode));
     }
 
-    public Page getCurrentPage() {
-        return currentPage;
-    }
-
     private void execute(Command c) {
         c.exe(getInstance());
         updateDynamicPageContent();
     }
-
+    
+    public Page getCurrentPage() {
+        return currentPage;
+    }
+    
     public boolean fireNextAction() {
         if (!cs.isEmpty()) {
             cs.getNextAction();
