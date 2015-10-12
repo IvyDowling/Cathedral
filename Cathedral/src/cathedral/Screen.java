@@ -12,7 +12,6 @@ public class Screen extends JPanel {
 
     private static final int HEIGHT = 35, WIDTH = 101, SCALE = 32;
     private static final Dimension DIMENSION = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
-    private static final int STARTING_HEIGHT = 75, STARTING_WIDTH = 80;
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
     private List<Render> renderList;
@@ -31,7 +30,6 @@ public class Screen extends JPanel {
     }
 
     public void render() {
-        asciiPanel.repaint();
         for (int i = 0; i < renderList.size(); i++) {
             asciiPanel.write(renderList.remove(i));
         }
@@ -39,6 +37,7 @@ public class Screen extends JPanel {
             asciiPanel.withEachTile(animationList.remove(i));
         }
         this.updateGameUI();
+        asciiPanel.repaint();
     }
 
     public void addRender(Render r) {
@@ -68,7 +67,7 @@ public class Screen extends JPanel {
         defaultRenderList.clear();
         asciiPanel.setDefaultBackgroundColor(p.getBackgroundColor());
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
-        updateGameUI();
+//        this.updateGameUI();
     }
 
     public static Screen getInstance() {

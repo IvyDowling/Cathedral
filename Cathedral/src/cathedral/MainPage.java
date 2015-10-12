@@ -9,24 +9,45 @@ public class MainPage extends Page {
 
     private Viewer viewer;
     private Render[] currentRender;
+    private final char V_BAR = '\u00B3';
+    private final char DOUBLE_V_BAR = '\u00BA';
+    private final char DOUBLE_H_BAR = '\u00CD';
+    private final char B_L_DOUBLE_CORNER = '\u00C8';
+    private final char T_L_DOUBLE_CORNER = '\u00C9';
+    private final char B_R_DOUBLE_CORNER = '\u00BC';
+    private final char T_R_DOUBLE_CORNER = '\u00BB';
+    //indexes, not size 101 slots, 100 is the last index
+    private final int PANEL_WIDTH = 99;
+    private final int PANEL_CENTER_WIDTH = 50;
+    private final int PANEL_HEIGHT = 34;
+    private final int PANEL_CENTER_HEIGHT = 17;
 
     public MainPage() {
         viewer = new Viewer();
         viewer.addRenderArray(VideoLib.getIntroCutscene());
+        viewer.play();
     }
 
     @Override
     public Render[] getDefaultRender() {
         List<Render> temp = new LinkedList<>();
-        char bar = '\u00B3';
-        for (int i = 0; i < 35; i++) {
-            temp.add(new Render(bar, 0, i, Color.WHITE, Color.BLACK));
-            temp.add(new Render(bar, 41, i, Color.WHITE, Color.BLACK));
-            temp.add(new Render(bar, 80, i, Color.WHITE, Color.BLACK));
-
+        //VERTICAL
+        for (int i = 1; i < PANEL_HEIGHT; i++) {
+            temp.add(new Render(DOUBLE_V_BAR, PANEL_CENTER_WIDTH, i, Color.WHITE, Color.BLACK));
+            temp.add(new Render(DOUBLE_V_BAR, PANEL_WIDTH, i, Color.WHITE, Color.BLACK));
+        }
+        //corners
+        temp.add(new Render(T_L_DOUBLE_CORNER, PANEL_CENTER_WIDTH, 0, Color.WHITE, Color.BLACK));
+        temp.add(new Render(B_L_DOUBLE_CORNER, PANEL_CENTER_WIDTH, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
+        temp.add(new Render(T_R_DOUBLE_CORNER, PANEL_WIDTH, 0, Color.WHITE, Color.BLACK));
+        temp.add(new Render(B_R_DOUBLE_CORNER, PANEL_WIDTH, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
+        //HORIZONTAL
+        for (int i = 0; i < PANEL_CENTER_WIDTH - 2; i++) { // -2 from l & r corner
+            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH  + 1 + i, 0, Color.WHITE, Color.BLACK));
+            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH  + 1 + i, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
         }
         Render[] ret = new Render[temp.size()];
-        for(int i = 0; i < temp.size(); i++){
+        for (int i = 0; i < temp.size(); i++) {
             ret[i] = temp.get(i);
         }
         return ret;
@@ -46,29 +67,36 @@ public class MainPage extends Page {
     public Command pageAction(int key
     ) {
         switch (key) {
-            case 32:
+            case 37://left
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.printToConsole("play!");
-                        c.getCurrentPage().playViewer();
+                    }
+                };
+            case 38://up
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                    }
+                };
+            case 39://right
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                    }
+                };
+            case 40://down
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
                     }
                 };
         }
         return new Command() {
             @Override
             public void exe(Controller c) {
-                c.printToConsole("does nothing");
             }
         };
-    }
-
-    private Render[] toRenderArray(String[] s, int x, int y, Color fg, Color bg) {
-        Render[] temp = new Render[s.length];
-        for (int i = 0; i < s.length; i++) {
-            temp[i] = new Render(s[i], x, i + y, fg, bg);
-        }
-        return temp;
     }
 
     @Override
