@@ -7,6 +7,14 @@ import java.util.List;
 
 public class VideoLib {
 
+    private static String[][] enemySprites = new String[][]{
+        new String[]{
+            "."
+        },
+        new String[]{
+            "."
+        }
+    };
     private static String[] intro1 = new String[]{
         "."
     };
@@ -64,6 +72,10 @@ public class VideoLib {
         return new Render[]{
             new Render("", 0, 0, Color.BLACK, Color.BLACK)
         };
+    }
+
+    public static Render[] getEnemySprite(int i, Color fg, Color bg) {
+        return toRenderArray(enemySprites[i], fg, bg);
     }
 
     private static Render[] toRenderArray(String[] s, Color fg, Color bg) {
