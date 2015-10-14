@@ -24,7 +24,8 @@ public class MainPage extends Page {
 
     public MainPage() {
         viewer = new Viewer();
-        viewer.addRenderArray(VideoLib.getIntroCutscene());
+//        viewer.addRenderArray(VideoLib.getIntroCutscene());
+        viewer.addRenderArray(VideoLib.getEnemySprite(0, PANEL_CENTER_WIDTH, 1, Color.WHITE, Color.BLACK));
         viewer.play();
     }
 
@@ -43,8 +44,8 @@ public class MainPage extends Page {
         temp.add(new Render(B_R_DOUBLE_CORNER, PANEL_WIDTH, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
         //HORIZONTAL
         for (int i = 0; i < PANEL_CENTER_WIDTH - 2; i++) { // -2 from l & r corner
-            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH  + 1 + i, 0, Color.WHITE, Color.BLACK));
-            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH  + 1 + i, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
+            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH + 1 + i, 0, Color.WHITE, Color.BLACK));
+            temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH + 1 + i, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
         }
         Render[] ret = new Render[temp.size()];
         for (int i = 0; i < temp.size(); i++) {
