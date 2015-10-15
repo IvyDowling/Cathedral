@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 public class Controller {
 
@@ -28,6 +29,19 @@ public class Controller {
         console = TextArea.getInstance();
         cs = new CombatSystem();
         console.write("Welcome to the Cathedral");
+        currentEnemy = EnemyLib.getEnemy(0);
+    }
+    
+    public Entity getCurrentEnemy(){
+        return currentEnemy;
+    }
+
+    public void makeEntity(double h, int w, int s, int d, List<Weapon> wep) {
+        self = new Entity(h, w, s, d, wep);
+    }
+    public void makeEntity(Entity e) {
+        self = e;
+        System.out.println(e.toString());
     }
 
     public void addRender(Render r) {
@@ -69,11 +83,11 @@ public class Controller {
         c.exe(getInstance());
         updateDynamicPageContent();
     }
-    
+
     public Page getCurrentPage() {
         return currentPage;
     }
-    
+
     public boolean fireNextAction() {
         if (!cs.isEmpty()) {
             cs.getNextAction();

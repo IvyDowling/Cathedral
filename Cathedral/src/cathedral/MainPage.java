@@ -1,6 +1,7 @@
 package cathedral;
 
 import asciiPanel.Render;
+import combatsystem.Weapon;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,12 +22,18 @@ public class MainPage extends Page {
     private final int PANEL_CENTER_WIDTH = 50;
     private final int PANEL_HEIGHT = 34;
     private final int PANEL_CENTER_HEIGHT = 17;
+    private double enemyHeight = Controller.getInstance().getCurrentEnemy().getHeight();
+    private List<String> enemyWep;
 
     public MainPage() {
         viewer = new Viewer();
 //        viewer.addRenderArray(VideoLib.getIntroCutscene());
         viewer.addRenderArray(VideoLib.getEnemySprite(0, PANEL_CENTER_WIDTH, 1, Color.WHITE, Color.BLACK));
         viewer.play();
+        enemyWep = new LinkedList<>();
+        for (Weapon w : Controller.getInstance().getCurrentEnemy().getWeaponInventory().getWeapons()) {
+            enemyWep.add(w.getName());
+        }
     }
 
     @Override
@@ -47,6 +54,12 @@ public class MainPage extends Page {
             temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH + 1 + i, 0, Color.WHITE, Color.BLACK));
             temp.add(new Render(DOUBLE_H_BAR, PANEL_CENTER_WIDTH + 1 + i, PANEL_HEIGHT, Color.WHITE, Color.BLACK));
         }
+        //UI DATA
+        temp.add(new Render("h: " + enemyHeight, PANEL_WIDTH - 6, 5, Color.WHITE, Color.BLACK));
+        for (int i = 0; i < enemyWep.size(); i++) {
+            temp.add(new Render(enemyWep.get(i), PANEL_WIDTH - 5, 7 + i, Color.WHITE, Color.BLACK));
+        }
+        //Return render[]
         Render[] ret = new Render[temp.size()];
         for (int i = 0; i < temp.size(); i++) {
             ret[i] = temp.get(i);
@@ -56,11 +69,19 @@ public class MainPage extends Page {
 
     @Override
     public Render[] getUpdateRender() {
-        if (viewer.isPlaying()) {
+        if (viewer.isFinished()) {
+//            List<Render> temp = new LinkedList<>();
+//            //ret render[]
+//            Render[] ret = new Render[temp.size()];
+//            for (int i = 0; i < temp.size(); i++) {
+//                ret[i] = temp.get(i);
+//            }
+//            return ret;
+            return getDefaultRender();
+        } else {
             //viewer render
             return currentRender = viewer.getCurrentRender();
-        } else {
-            return getDefaultRender();
+
         }
     }
 

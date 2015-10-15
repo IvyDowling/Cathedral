@@ -20,20 +20,22 @@ public class CharacterCreatorPage extends Page {
     private int locationRef = 0;//+1 for move down, minus 1 move up
     private int cursorLocation = 8 + locationRef;
 
-    private ListItem[] stats;
-    private WeaponItem[] weapons;
+    private ListItem[] statsList;
+    private WeaponItem[] weaponsList;
+    private WeaponItem[] selectedWeapons;
 
     public CharacterCreatorPage() {
-        this.stats = new ListItem[3];
-        this.weapons = new WeaponItem[5];
-        stats[0] = new ListItem(1, "Height");
-        stats[1] = new ListItem(1, "STR");
-        stats[2] = new ListItem(1, "DEX");
-        weapons[0] = new WeaponItem(1, "Dagger", 1, 2, 5);
-        weapons[1] = new WeaponItem(4, "Longsword", 4, 6, 3);
-        weapons[2] = new WeaponItem(3, "Axe", 3, 8, 2);
-        weapons[3] = new WeaponItem(3, "Hammer", 2, 10, 0);
-        weapons[4] = new WeaponItem(5, "BattleAxe", 4, 14, 2);
+        this.statsList = new ListItem[3];
+        this.weaponsList = new WeaponItem[5];
+        this.selectedWeapons = new WeaponItem[2]; // you only get two weapons
+        statsList[0] = new ListItem(1, "Height");
+        statsList[1] = new ListItem(1, "STR");
+        statsList[2] = new ListItem(1, "DEX");
+        weaponsList[0] = new WeaponItem(1, "Dagger", 1, 2, 5);
+        weaponsList[1] = new WeaponItem(4, "Longsword", 4, 6, 3);
+        weaponsList[2] = new WeaponItem(3, "Axe", 3, 8, 2);
+        weaponsList[3] = new WeaponItem(3, "Hammer", 2, 10, 0);
+        weaponsList[4] = new WeaponItem(5, "BattleAxe", 4, 14, 2);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CharacterCreatorPage extends Page {
             new Render("Longsword       -4-------6------ + 3 ----4", alignX, 12, fg, bg),
             new Render("Axe             -3-------8------ + 2 ----3", alignX, 13, fg, bg),
             new Render("Hammer          -2------10------ + 0 ----3", alignX, 14, fg, bg),
-            new Render("Battle Axe (2H) -4------14------ + 2 ----5", alignX, 15, fg, bg),};
+            new Render("Battle Axe      -4------14------ + 2 ----5", alignX, 15, fg, bg),};
     }
 
     @Override
@@ -59,18 +61,18 @@ public class CharacterCreatorPage extends Page {
         Color bg = Color.BLACK;
         Color fg = Color.YELLOW;
         Render[] temp = new Render[10];
-        temp[0] = new Render(stats[0].output() + " ft", rightAlign, 8, fg, bg);
-        temp[1] = new Render(stats[1].output() + " (lbs)", rightAlign, 9, fg, bg);
-        temp[2] = new Render(stats[2].output(), rightAlign, 10, fg, bg);
+        temp[0] = new Render(statsList[0].output() + " ft", rightAlign, 8, fg, bg);
+        temp[1] = new Render(statsList[1].output() + " (lbs)", rightAlign, 9, fg, bg);
+        temp[2] = new Render(statsList[2].output(), rightAlign, 10, fg, bg);
         //weps
         if (!this.canWieldWarning()) {
             fg = Color.RED;
         }
-        temp[3] = new Render(weapons[0].output(), rightAlign, 11, fg, bg);
-        temp[4] = new Render(weapons[1].output(), rightAlign, 12, fg, bg);
-        temp[5] = new Render(weapons[2].output(), rightAlign, 13, fg, bg);
-        temp[6] = new Render(weapons[3].output(), rightAlign, 14, fg, bg);
-        temp[7] = new Render(weapons[4].output(), rightAlign, 15, fg, bg);
+        temp[3] = new Render(weaponsList[0].output(), rightAlign, 11, fg, bg);
+        temp[4] = new Render(weaponsList[1].output(), rightAlign, 12, fg, bg);
+        temp[5] = new Render(weaponsList[2].output(), rightAlign, 13, fg, bg);
+        temp[6] = new Render(weaponsList[3].output(), rightAlign, 14, fg, bg);
+        temp[7] = new Render(weaponsList[4].output(), rightAlign, 15, fg, bg);
         temp[8] = new Render(">", alignX - 1, 8 + locationRef, Color.ORANGE, Color.BLACK);
         temp[9] = new Render(" Points: " + pointPool + " ", 65, 2, Color.YELLOW, Color.BLUE);
 
@@ -127,7 +129,14 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
+                            c.makeEntity(exportEntity());
                             c.setPage(new MainPage());
+                        }
+                    };
+                } else {
+                    return new Command() {
+                        @Override
+                        public void exe(Controller c) {
                         }
                     };
                 }
@@ -148,17 +157,21 @@ public class CharacterCreatorPage extends Page {
     }
 
     private boolean moveRight() {
-        if (locationRef > (stats.length - 1)) {
-            int index = locationRef - stats.length;
-            if (pointPool >= weapons[index].cost) {
-                weapons[index].addPoint();
-                pointPool = pointPool - weapons[index].cost;
+        if (locationRef > (statsList.length - 1)) { // WEAPONS
+            int index = locationRef - statsList.length;
+            if (pointPool >= weaponsList[index].cost) {
+                //private getFreeWepSlot()
+                if (getFreeWeaponSlots()) {
+                    weaponsList[index].addPoint();
+                    pointPool = pointPool - weaponsList[index].cost;
+                    selectWeapon(weaponsList[index]);
+                }
                 return true;
             }
-        } else {
-            if (pointPool >= stats[locationRef].cost) {
-                stats[locationRef].addPoint();
-                pointPool = pointPool - stats[locationRef].cost;
+        } else { // STATS
+            if (pointPool >= statsList[locationRef].cost) {
+                statsList[locationRef].addPoint();
+                pointPool = pointPool - statsList[locationRef].cost;
                 return true;
             }
         }
@@ -167,22 +180,46 @@ public class CharacterCreatorPage extends Page {
 
     private boolean moveLeft() {
         if (pointPool != 12) {
-            if (locationRef > (stats.length - 1)) {
-                int index = locationRef - stats.length;
-                if (weapons[index].pointsAdded > 0) {
-                    weapons[index].removePoint();
-                    pointPool = pointPool + weapons[index].cost;
+            if (locationRef > (statsList.length - 1)) { // WEAPONS
+                int index = locationRef - statsList.length;
+                if (weaponsList[index].pointsAdded > 0) {
+                    weaponsList[index].removePoint();
+                    pointPool = pointPool + weaponsList[index].cost;
+                    deselectWeapon(weaponsList[index]);
                     return true;
                 }
-            } else {
-                if (stats[locationRef].pointsAdded > 0) {
-                    stats[locationRef].removePoint();
-                    pointPool = pointPool + stats[locationRef].cost;
+            } else { //STATS
+                if (statsList[locationRef].pointsAdded > 0) {
+                    statsList[locationRef].removePoint();
+                    pointPool = pointPool + statsList[locationRef].cost;
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private boolean getFreeWeaponSlots() {
+        if (selectedWeapons[0] != null && selectedWeapons[1] != null) {
+            return false;
+        }
+        return true;
+    }
+
+    private void selectWeapon(WeaponItem w) {
+        if (selectedWeapons[0] == null) {
+            selectedWeapons[0] = w;
+        } else if (selectedWeapons[1] == null) {
+            selectedWeapons[1] = w;
+        }
+    }
+
+    private void deselectWeapon(WeaponItem w) {
+        if (selectedWeapons[0] == w) {
+            selectedWeapons[0] = null;
+        } else if (selectedWeapons[1] == w) {
+            selectedWeapons[1] = null;
+        }
     }
 
     private boolean moveUp() {
@@ -203,7 +240,7 @@ public class CharacterCreatorPage extends Page {
 
     private boolean canWieldWarning() {
         int wepWeight = 0;
-        for (WeaponItem w : weapons) {
+        for (WeaponItem w : weaponsList) {
             // collect the ammount of weapons chosen
             wepWeight = wepWeight + ((w.pointsAdded / w.cost) * w.weight);
         }
@@ -213,29 +250,31 @@ public class CharacterCreatorPage extends Page {
     }
 
     private double getHeight() {
-        return HEIGHT_MIN + stats[0].pointsAdded * 2;
+        return HEIGHT_MIN + ((double)statsList[0].pointsAdded / 2);
     }
 
     private int getWeight() {
         int WEIGHT_MIN = 120;
-        return WEIGHT_MIN + (10 * getStr());
+        return WEIGHT_MIN + (10 * getStr()) + (10 * statsList[0].pointsAdded);
     }
 
     private int getStr() {
-        return STR_MIN + stats[1].pointsAdded * 2;
+        return STR_MIN + statsList[1].pointsAdded * 2;
     }
 
     private int getDex() {
-        return DEX_MIN + stats[2].pointsAdded * stats[2].cost;
+        return DEX_MIN + statsList[2].pointsAdded * 2;
     }
 
-    public Entity exportCharacter() {
+    public Entity exportEntity() {
         List<Weapon> wep = new LinkedList<>();
-        for (WeaponItem w : weapons) {
-            if (w.sharpness > 0) {
-                wep.add(new Weapon(w.length, w.weight, true, w.sharpness));
-            } else {
-                wep.add(new Weapon(w.length, w.weight));
+        for (WeaponItem w : selectedWeapons) {
+            if (w != null) {
+                if (w.sharpness > 0) {
+                    wep.add(new Weapon(w.name, w.length, w.weight, w.sharpness));
+                } else {
+                    wep.add(new Weapon(w.name, w.length, w.weight));
+                }
             }
         }
         return new Entity(getHeight(), getWeight(), getStr(), getDex(), wep);
@@ -249,6 +288,7 @@ public class CharacterCreatorPage extends Page {
     @Override
     public void playViewer() {
         //no cutscene
+//        viewer.play();
     }
 
     //
