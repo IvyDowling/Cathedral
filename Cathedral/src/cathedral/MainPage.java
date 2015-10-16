@@ -1,6 +1,9 @@
 package cathedral;
 
+import asciiPanel.AsciiCharacterData;
 import asciiPanel.Render;
+import asciiPanel.TileTransformer;
+import combatsystem.BodyComponent;
 import combatsystem.Weapon;
 import java.awt.Color;
 import java.util.LinkedList;
@@ -22,8 +25,15 @@ public class MainPage extends Page {
     private final int PANEL_CENTER_WIDTH = 50;
     private final int PANEL_HEIGHT = 34;
     private final int PANEL_CENTER_HEIGHT = 17;
+    private final TileTransformer highlight = new TileTransformer() {
+        @Override
+        public void transformTile(int x, int y, AsciiCharacterData data) {
+            data.backgroundColor = Color.YELLOW;
+        }
+    };
     private double enemyHeight = Controller.getInstance().getCurrentEnemy().getHeight();
     private List<String> enemyWep;
+    private BodyComponent focusRef;
 
     public MainPage() {
         viewer = new Viewer();
@@ -34,6 +44,7 @@ public class MainPage extends Page {
         for (Weapon w : Controller.getInstance().getCurrentEnemy().getWeaponInventory().getWeapons()) {
             enemyWep.add(w.getName());
         }
+        focusRef = BodyComponent.HEAD;
     }
 
     @Override
@@ -70,14 +81,14 @@ public class MainPage extends Page {
     @Override
     public Render[] getUpdateRender() {
         if (viewer.isFinished()) {
-//            List<Render> temp = new LinkedList<>();
-//            //ret render[]
-//            Render[] ret = new Render[temp.size()];
-//            for (int i = 0; i < temp.size(); i++) {
-//                ret[i] = temp.get(i);
-//            }
-//            return ret;
-            return getDefaultRender();
+            List<Render> temp = new LinkedList<>();
+            //ret render[]
+            Render[] ret = new Render[temp.size()];
+            for (int i = 0; i < temp.size(); i++) {
+                ret[i] = temp.get(i);
+            }
+            return ret;
+//            return getDefaultRender();
         } else {
             //viewer render
             return currentRender = viewer.getCurrentRender();
@@ -86,37 +97,108 @@ public class MainPage extends Page {
     }
 
     @Override
-    public Command pageAction(int key
-    ) {
+    public Command pageAction(int key) {
         switch (key) {
             case 37://left
-                return new Command() {
-                    @Override
-                    public void exe(Controller c) {
-                    }
-                };
+                return leftFocus();
             case 38://up
-                return new Command() {
-                    @Override
-                    public void exe(Controller c) {
-                    }
-                };
+                return upFocus();
             case 39://right
-                return new Command() {
-                    @Override
-                    public void exe(Controller c) {
-                    }
-                };
+                return rightFocus();
             case 40://down
-                return new Command() {
-                    @Override
-                    public void exe(Controller c) {
-                    }
-                };
+                return downFocus();
         }
         return new Command() {
             @Override
             public void exe(Controller c) {
+            }
+        };
+    }
+
+    private Command leftFocus() {
+        switch (focusRef) {
+            case HEAD:
+            case TORSO:
+                focusRef = BodyComponent.LARM;
+                break;
+            case RARM:
+                focusRef = BodyComponent.LARM;
+                break;
+            case RLEG:
+                focusRef = BodyComponent.LLEG;
+        }
+        //return the highlighted focus
+        return new Command() {
+            @Override
+            public void exe(Controller c) {
+                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+            }
+        };
+    }
+
+    private Command rightFocus() {
+        switch (focusRef) {
+            case HEAD:
+            case TORSO:
+                focusRef = BodyComponent.RARM;
+                break;
+            case LARM:
+                focusRef = BodyComponent.RARM;
+                break;
+            case LLEG:
+                focusRef = BodyComponent.RLEG;
+        }
+        //return the highlighted focus
+        return new Command() {
+            @Override
+            public void exe(Controller c) {
+                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+            }
+        };
+    }
+
+    private Command upFocus() {
+        switch (focusRef) {
+            case TORSO:
+                focusRef = BodyComponent.HEAD;
+                break;
+            case RARM:
+            case LARM:
+                focusRef = BodyComponent.HEAD;
+                break;
+            case LLEG:
+            case RLEG:
+                focusRef = BodyComponent.TORSO;
+        }
+        //return the highlighted focus
+        return new Command() {
+            @Override
+            public void exe(Controller c) {
+                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+            }
+        };
+    }
+
+    private Command downFocus() {
+        switch (focusRef) {
+            case HEAD:
+                focusRef = BodyComponent.TORSO;
+                break;
+            case TORSO:
+                focusRef = BodyComponent.LLEG;
+                break;
+            case LARM:
+                focusRef = BodyComponent.LLEG;
+                break;
+            case RARM:
+                focusRef = BodyComponent.RLEG;
+                break;
+        }
+        //return the highlighted focus
+        return new Command() {
+            @Override
+            public void exe(Controller c) {
+                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
             }
         };
     }

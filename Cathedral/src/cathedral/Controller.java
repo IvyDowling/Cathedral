@@ -1,7 +1,11 @@
 package cathedral;
 
+import asciiPanel.AsciiCharacterData;
+import asciiPanel.Range;
 import asciiPanel.Render;
+import asciiPanel.TileTransformer;
 import combatsystem.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,14 +35,15 @@ public class Controller {
         console.write("Welcome to the Cathedral");
         currentEnemy = EnemyLib.getEnemy(0);
     }
-    
-    public Entity getCurrentEnemy(){
+
+    public Entity getCurrentEnemy() {
         return currentEnemy;
     }
 
     public void makeEntity(double h, int w, int s, int d, List<Weapon> wep) {
         self = new Entity(h, w, s, d, wep);
     }
+
     public void makeEntity(Entity e) {
         self = e;
         System.out.println(e.toString());
@@ -46,6 +51,10 @@ public class Controller {
 
     public void addRender(Render r) {
         screen.addRender(r);
+    }
+
+    public void addAnimation(Range[] r, TileTransformer t) {
+        screen.addAnimation(r, t);
     }
 
     public void updateDynamicPageContent() {

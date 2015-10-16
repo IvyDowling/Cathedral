@@ -15,7 +15,7 @@ public class Screen extends JPanel {
     private static Screen screen = new Screen();
     private static AsciiPanel asciiPanel;
     private List<Render> renderList;
-    private List<TileTransformer> animationList;
+    private List<Animation> animationList;
     private List<Render> defaultRenderList;
 
     public Screen() {
@@ -33,8 +33,8 @@ public class Screen extends JPanel {
         for (int i = 0; i < renderList.size(); i++) {
             asciiPanel.write(renderList.remove(i));
         }
-        for (int i = 0; i < animationList.size(); i++) {
-            asciiPanel.withEachTile(animationList.remove(i));
+        for (Animation a : animationList) {
+            asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
         }
         this.updateGameUI();
         asciiPanel.repaint();
@@ -48,8 +48,11 @@ public class Screen extends JPanel {
         renderList.addAll(Arrays.asList(rnd));
     }
 
-    public void addAnimation(TileTransformer t) {
-        animationList.add(t);
+    public void addAnimation(Range[] r, TileTransformer transformer) {
+        for (int i = 0; i < r.length; i++) {
+            Range range = r[i];
+            animationList.add(new Animation(range.x, range.y, range.width, transformer));
+        }
     }
 
     public void clear(int x, int y, int w, int h) {
@@ -75,5 +78,18 @@ public class Screen extends JPanel {
             Screen screen = new Screen();
         }
         return screen;
+    }
+
+    private class Animation {
+
+        public TileTransformer transform;
+        public int x, y, width;
+
+        public Animation(int x, int y, int w, TileTransformer t) {
+            this.x = x;
+            this.y = y;
+            width = w;
+            transform = t;
+        }
     }
 }
