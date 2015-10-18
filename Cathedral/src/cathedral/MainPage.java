@@ -28,7 +28,8 @@ public class MainPage extends Page {
     private final TileTransformer highlight = new TileTransformer() {
         @Override
         public void transformTile(int x, int y, AsciiCharacterData data) {
-            data.backgroundColor = Color.YELLOW;
+            data.backgroundColor = Color.GREEN;
+            data.foregroundColor = Color.BLACK;
         }
     };
     private double enemyHeight = Controller.getInstance().getCurrentEnemy().getHeight();
@@ -122,7 +123,7 @@ public class MainPage extends Page {
                 focusRef = BodyComponent.LARM;
                 break;
             case RARM:
-                focusRef = BodyComponent.LARM;
+                focusRef = BodyComponent.TORSO;
                 break;
             case RLEG:
                 focusRef = BodyComponent.LLEG;
@@ -132,6 +133,7 @@ public class MainPage extends Page {
             @Override
             public void exe(Controller c) {
                 c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                c.printToConsole(focusRef.name());
             }
         };
     }
@@ -143,7 +145,7 @@ public class MainPage extends Page {
                 focusRef = BodyComponent.RARM;
                 break;
             case LARM:
-                focusRef = BodyComponent.RARM;
+                focusRef = BodyComponent.TORSO;
                 break;
             case LLEG:
                 focusRef = BodyComponent.RLEG;
@@ -153,6 +155,7 @@ public class MainPage extends Page {
             @Override
             public void exe(Controller c) {
                 c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                c.printToConsole(focusRef.name());
             }
         };
     }
@@ -175,6 +178,7 @@ public class MainPage extends Page {
             @Override
             public void exe(Controller c) {
                 c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                c.printToConsole(focusRef.name());
             }
         };
     }
@@ -199,6 +203,7 @@ public class MainPage extends Page {
             @Override
             public void exe(Controller c) {
                 c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                c.printToConsole(focusRef.name());
             }
         };
     }

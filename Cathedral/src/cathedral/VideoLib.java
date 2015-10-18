@@ -10,7 +10,7 @@ import java.util.List;
 public class VideoLib {
 
     private static final int PANEL_WIDTH = 99;
-    private static final int PANEL_CENTER_WIDTH = 50;
+    private static final int PANEL_CENTER_WIDTH = 51;
     private static final int PANEL_HEIGHT = 34;
     private static final int PANEL_CENTER_HEIGHT = 17;
 
@@ -18,71 +18,71 @@ public class VideoLib {
         switch (b) {
             case LARM:
                 return new Range[]{
-                    new Range(10 + PANEL_CENTER_WIDTH, 4, 3),
-                    new Range(9 + PANEL_CENTER_WIDTH, 5, 4),
+                    new Range(10 + PANEL_CENTER_WIDTH, 5, 3),
                     new Range(9 + PANEL_CENTER_WIDTH, 6, 4),
-                    new Range(8 + PANEL_CENTER_WIDTH, 7, 5),
+                    new Range(9 + PANEL_CENTER_WIDTH, 7, 4),
                     new Range(8 + PANEL_CENTER_WIDTH, 8, 5),
-                    new Range(7 + PANEL_CENTER_WIDTH, 9, 6),
-                    new Range(7 + PANEL_CENTER_WIDTH, 10, 4),
-                    new Range(7 + PANEL_CENTER_WIDTH, 11, 3),
-                    new Range(6 + PANEL_CENTER_WIDTH, 12, 4),
-                    new Range(6 + PANEL_CENTER_WIDTH, 13, 4)
+                    new Range(8 + PANEL_CENTER_WIDTH, 9, 5),
+                    new Range(7 + PANEL_CENTER_WIDTH, 10, 6),
+                    new Range(7 + PANEL_CENTER_WIDTH, 11, 4),
+                    new Range(7 + PANEL_CENTER_WIDTH, 12, 3),
+                    new Range(6 + PANEL_CENTER_WIDTH, 13, 4),
+                    new Range(6 + PANEL_CENTER_WIDTH, 14, 4)
                 };
             case RARM:
                 return new Range[]{
-                    new Range(22 + PANEL_CENTER_WIDTH, 4, 1),
                     new Range(22 + PANEL_CENTER_WIDTH, 5, 1),
                     new Range(22 + PANEL_CENTER_WIDTH, 6, 1),
-                    new Range(22 + PANEL_CENTER_WIDTH, 7, 2),
+                    new Range(22 + PANEL_CENTER_WIDTH, 7, 1),
                     new Range(22 + PANEL_CENTER_WIDTH, 8, 2),
-                    new Range(22 + PANEL_CENTER_WIDTH, 9, 3),
-                    new Range(22 + PANEL_CENTER_WIDTH, 10, 4),
-                    new Range(22 + PANEL_CENTER_WIDTH, 11, 8),
-                    new Range(25 + PANEL_CENTER_WIDTH, 12, 5)
+                    new Range(22 + PANEL_CENTER_WIDTH, 9, 2),
+                    new Range(22 + PANEL_CENTER_WIDTH, 10, 3),
+                    new Range(22 + PANEL_CENTER_WIDTH, 11, 4),
+                    new Range(22 + PANEL_CENTER_WIDTH, 12, 8),
+                    new Range(25 + PANEL_CENTER_WIDTH, 13, 5)
                 };
             case LLEG:
                 return new Range[]{
-                    new Range(11 + PANEL_CENTER_WIDTH, 19, 6),
-                    new Range(11 + PANEL_CENTER_WIDTH, 20, 5),
-                    new Range(10 + PANEL_CENTER_WIDTH, 21, 5),
-                    new Range(10 + PANEL_CENTER_WIDTH, 22, 4),
-                    new Range(10 + PANEL_CENTER_WIDTH, 23, 4), 
-                    new Range(10 + PANEL_CENTER_WIDTH, 24, 4),
-                    new Range(10 + PANEL_CENTER_WIDTH, 25, 3),
+                    new Range(11 + PANEL_CENTER_WIDTH, 20, 6),
+                    new Range(11 + PANEL_CENTER_WIDTH, 21, 5),
+                    new Range(10 + PANEL_CENTER_WIDTH, 22, 5),
+                    new Range(10 + PANEL_CENTER_WIDTH, 23, 4),
+                    new Range(10 + PANEL_CENTER_WIDTH, 24, 4), 
+                    new Range(10 + PANEL_CENTER_WIDTH, 25, 4),
                     new Range(10 + PANEL_CENTER_WIDTH, 26, 3),
-                    new Range(10 + PANEL_CENTER_WIDTH, 27, 4),
-                    new Range(10 + PANEL_CENTER_WIDTH, 28, 4)
+                    new Range(10 + PANEL_CENTER_WIDTH, 27, 3),
+                    new Range(10 + PANEL_CENTER_WIDTH, 28, 4),
+                    new Range(10 + PANEL_CENTER_WIDTH, 29, 4)
                 };
             case RLEG:
                 return new Range[]{
-                    new Range(19 + PANEL_CENTER_WIDTH, 19, 5),
                     new Range(19 + PANEL_CENTER_WIDTH, 20, 5),
-                    new Range(19 + PANEL_CENTER_WIDTH, 21, 3),
+                    new Range(19 + PANEL_CENTER_WIDTH, 21, 5),
                     new Range(19 + PANEL_CENTER_WIDTH, 22, 3),
                     new Range(19 + PANEL_CENTER_WIDTH, 23, 3),
                     new Range(19 + PANEL_CENTER_WIDTH, 24, 3),
-                    new Range(19 + PANEL_CENTER_WIDTH, 25, 4),
-                    new Range(19 + PANEL_CENTER_WIDTH, 26, 6)
+                    new Range(19 + PANEL_CENTER_WIDTH, 25, 3),
+                    new Range(19 + PANEL_CENTER_WIDTH, 26, 4),
+                    new Range(19 + PANEL_CENTER_WIDTH, 27, 6)
                 };
             case TORSO:
                 return new Range[]{
-                    new Range(12 + PANEL_CENTER_WIDTH, 4, 10),
                     new Range(12 + PANEL_CENTER_WIDTH, 5, 10),
                     new Range(12 + PANEL_CENTER_WIDTH, 6, 10),
                     new Range(12 + PANEL_CENTER_WIDTH, 7, 10),
                     new Range(12 + PANEL_CENTER_WIDTH, 8, 10),
                     new Range(12 + PANEL_CENTER_WIDTH, 9, 10),
-                    new Range(13 + PANEL_CENTER_WIDTH, 10, 9),
+                    new Range(12 + PANEL_CENTER_WIDTH, 10, 10),
                     new Range(13 + PANEL_CENTER_WIDTH, 11, 9),
-                    new Range(12 + PANEL_CENTER_WIDTH, 12, 10)
+                    new Range(13 + PANEL_CENTER_WIDTH, 12, 9),
+                    new Range(12 + PANEL_CENTER_WIDTH, 13, 10)
                 };
             case HEAD:
                 return new Range[]{
-                    new Range(15 + PANEL_CENTER_WIDTH, 0, 4),
-                    new Range(14 + PANEL_CENTER_WIDTH, 1, 6),
+                    new Range(15 + PANEL_CENTER_WIDTH, 1, 4),
                     new Range(14 + PANEL_CENTER_WIDTH, 2, 6),
-                    new Range(13 + PANEL_CENTER_WIDTH, 3, 8)
+                    new Range(14 + PANEL_CENTER_WIDTH, 3, 6),
+                    new Range(13 + PANEL_CENTER_WIDTH, 4, 8)
                 };
         }
         return new Range[]{};
