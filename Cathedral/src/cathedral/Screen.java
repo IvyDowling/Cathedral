@@ -30,14 +30,27 @@ public class Screen extends JPanel {
     }
 
     public void render() {
-        for (int i = 0; i < renderList.size(); i++) {
-            asciiPanel.write(renderList.remove(i));
+        this.updateGameUI();
+        for (Render r : renderList) {
+            asciiPanel.write(r);
         }
         for (Animation a : animationList) {
             asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
         }
-        this.updateGameUI();
+        renderList.clear();
+//        animationList.clear(); // we don't clear unless specifically told to for animation
         asciiPanel.repaint();
+    }
+
+    public void clearAnimation() {
+        asciiPanel.withEachTile(0, 0, asciiPanel.getWidthInCharacters(),
+                asciiPanel.getHeightInCharacters(), new TileTransformer() {
+                    @Override
+                    public void transformTile(int x, int y, AsciiCharacterData data) {
+                        data.backgroundColor = Color.BLACK;
+                        data.foregroundColor = Color.WHITE;
+                    }
+                });
     }
 
     public void addRender(Render r) {
@@ -69,8 +82,16 @@ public class Screen extends JPanel {
         asciiPanel.clear();
         defaultRenderList.clear();
         asciiPanel.setDefaultBackgroundColor(p.getBackgroundColor());
+        asciiPanel.setDefaultForegroundColor(p.getForegroundColor());
         defaultRenderList.addAll(Arrays.asList(p.getDefaultRender()));
-//        this.updateGameUI();
+    }
+
+    public int getHeightInCharacters() {
+        return asciiPanel.getHeightInCharacters();
+    }
+
+    public int getWidthInCharacters() {
+        return asciiPanel.getWidthInCharacters();
     }
 
     public static Screen getInstance() {

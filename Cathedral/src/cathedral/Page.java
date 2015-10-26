@@ -7,12 +7,14 @@ public abstract class Page {
 
     public abstract Color getBackgroundColor();
 
+    public abstract Color getForegroundColor();
+
     public abstract Render[] getDefaultRender();
 
     public abstract Render[] getUpdateRender();
 
     public abstract Command pageAction(int key);
-    
+
     public abstract void playViewer();
 
 }

@@ -67,12 +67,12 @@ public class VideoLib {
                 };
             case TORSO:
                 return new Range[]{
-                    new Range(12 + PANEL_CENTER_WIDTH, 5, 10),
-                    new Range(12 + PANEL_CENTER_WIDTH, 6, 10),
-                    new Range(12 + PANEL_CENTER_WIDTH, 7, 10),
-                    new Range(12 + PANEL_CENTER_WIDTH, 8, 10),
-                    new Range(12 + PANEL_CENTER_WIDTH, 9, 10),
-                    new Range(12 + PANEL_CENTER_WIDTH, 10, 10),
+                    new Range(13 + PANEL_CENTER_WIDTH, 5, 9),
+                    new Range(13 + PANEL_CENTER_WIDTH, 6, 9),
+                    new Range(13 + PANEL_CENTER_WIDTH, 7, 9),
+                    new Range(13 + PANEL_CENTER_WIDTH, 8, 9),
+                    new Range(13 + PANEL_CENTER_WIDTH, 9, 9),
+                    new Range(13 + PANEL_CENTER_WIDTH, 10, 9),
                     new Range(13 + PANEL_CENTER_WIDTH, 11, 9),
                     new Range(13 + PANEL_CENTER_WIDTH, 12, 9),
                     new Range(12 + PANEL_CENTER_WIDTH, 13, 10)

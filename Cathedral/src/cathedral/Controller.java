@@ -66,7 +66,15 @@ public class Controller {
         }
     }
 
-    public void clear(int x, int y, int w, int h) {
+    public void clearAnimation() {
+        screen.clearAnimation();
+    }
+
+    public void clearRender() {
+        screen.clear(0, 0, screen.getWidthInCharacters(), screen.getHeightInCharacters());
+    }
+
+    public void clearRender(int x, int y, int w, int h) {
         screen.clear(x, y, w, h);
     }
 

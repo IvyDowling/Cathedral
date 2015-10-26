@@ -17,7 +17,7 @@ public class OpeningPage extends Page {
                     @Override
                     public void exe(Controller c) {
                         if (!top) {
-                            c.clear(29, 10, 1, 2);
+                            c.clearRender(29, 10, 1, 2);
                             top = true;
                         }
                     }
@@ -27,7 +27,7 @@ public class OpeningPage extends Page {
                     @Override
                     public void exe(Controller c) {
                         if (top) {
-                            c.clear(29, 10, 1, 2);
+                            c.clearRender(29, 10, 1, 2);
                             top = false;
                         }
                     }
@@ -111,6 +111,11 @@ public class OpeningPage extends Page {
     @Override
     public Color getBackgroundColor() {
         return Color.BLACK;
+    }
+
+    @Override
+    public Color getForegroundColor() {
+        return Color.WHITE;
     }
 
     @Override

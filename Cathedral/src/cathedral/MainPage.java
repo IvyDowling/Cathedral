@@ -39,7 +39,7 @@ public class MainPage extends Page {
     public MainPage() {
         viewer = new Viewer();
 //        viewer.addRenderArray(VideoLib.getIntroCutscene());
-        viewer.addRenderArray(VideoLib.getEnemySprite(0, PANEL_CENTER_WIDTH, 1, Color.WHITE, Color.BLACK));
+//        viewer.addRenderArray(VideoLib.getEnemySprite(0, PANEL_CENTER_WIDTH, 1, Color.WHITE, Color.BLACK));
         viewer.play();
         enemyWep = new LinkedList<>();
         for (Weapon w : Controller.getInstance().getCurrentEnemy().getWeaponInventory().getWeapons()) {
@@ -51,6 +51,11 @@ public class MainPage extends Page {
     @Override
     public Render[] getDefaultRender() {
         List<Render> temp = new LinkedList<>();
+//        enemy sprite
+        Render[] sprite = VideoLib.getEnemySprite(0, PANEL_CENTER_WIDTH, 1, Color.WHITE, Color.BLACK);
+        for (Render r : sprite) {
+            temp.add(r);
+        }
         //VERTICAL
         for (int i = 1; i < PANEL_HEIGHT; i++) {
             temp.add(new Render(DOUBLE_V_BAR, PANEL_CENTER_WIDTH, i, Color.WHITE, Color.BLACK));
@@ -71,6 +76,7 @@ public class MainPage extends Page {
         for (int i = 0; i < enemyWep.size(); i++) {
             temp.add(new Render(enemyWep.get(i), PANEL_WIDTH - 5, 7 + i, Color.WHITE, Color.BLACK));
         }
+
         //Return render[]
         Render[] ret = new Render[temp.size()];
         for (int i = 0; i < temp.size(); i++) {
@@ -101,13 +107,48 @@ public class MainPage extends Page {
     public Command pageAction(int key) {
         switch (key) {
             case 37://left
-                return leftFocus();
+                leftFocus();
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.clearAnimation();
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                    }
+                };
             case 38://up
-                return upFocus();
+                upFocus();
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.clearAnimation();
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                    }
+                };
             case 39://right
-                return rightFocus();
+                rightFocus();
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.clearAnimation();
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                    }
+                };
             case 40://down
-                return downFocus();
+                downFocus();
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.clearAnimation();
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                    }
+                };
+            case 32://space bar
+                return new Command() {
+                    @Override
+                    public void exe(Controller c) {
+                        c.printToConsole("Attack " + focusRef);
+                    }
+                };
         }
         return new Command() {
             @Override
@@ -116,7 +157,7 @@ public class MainPage extends Page {
         };
     }
 
-    private Command leftFocus() {
+    private void leftFocus() {
         switch (focusRef) {
             case HEAD:
             case TORSO:
@@ -128,17 +169,9 @@ public class MainPage extends Page {
             case RLEG:
                 focusRef = BodyComponent.LLEG;
         }
-        //return the highlighted focus
-        return new Command() {
-            @Override
-            public void exe(Controller c) {
-                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
-                c.printToConsole(focusRef.name());
-            }
-        };
     }
 
-    private Command rightFocus() {
+    private void rightFocus() {
         switch (focusRef) {
             case HEAD:
             case TORSO:
@@ -150,17 +183,9 @@ public class MainPage extends Page {
             case LLEG:
                 focusRef = BodyComponent.RLEG;
         }
-        //return the highlighted focus
-        return new Command() {
-            @Override
-            public void exe(Controller c) {
-                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
-                c.printToConsole(focusRef.name());
-            }
-        };
     }
 
-    private Command upFocus() {
+    private void upFocus() {
         switch (focusRef) {
             case TORSO:
                 focusRef = BodyComponent.HEAD;
@@ -173,17 +198,9 @@ public class MainPage extends Page {
             case RLEG:
                 focusRef = BodyComponent.TORSO;
         }
-        //return the highlighted focus
-        return new Command() {
-            @Override
-            public void exe(Controller c) {
-                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
-                c.printToConsole(focusRef.name());
-            }
-        };
     }
 
-    private Command downFocus() {
+    private void downFocus() {
         switch (focusRef) {
             case HEAD:
                 focusRef = BodyComponent.TORSO;
@@ -198,19 +215,16 @@ public class MainPage extends Page {
                 focusRef = BodyComponent.RLEG;
                 break;
         }
-        //return the highlighted focus
-        return new Command() {
-            @Override
-            public void exe(Controller c) {
-                c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
-                c.printToConsole(focusRef.name());
-            }
-        };
     }
 
     @Override
     public Color getBackgroundColor() {
         return Color.BLACK;
+    }
+
+    @Override
+    public Color getForegroundColor() {
+        return Color.WHITE;
     }
 
     @Override

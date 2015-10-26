@@ -94,7 +94,7 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
-                            c.clear(alignX - 1, 8, 1, 8);// cleanup old cursors
+                            c.clearRender(alignX - 1, 8, 1, 8);// cleanup old cursors
                         }
                     };
                 }
@@ -115,7 +115,7 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
-                            c.clear(alignX - 1, 8, 1, 8); // cleanup old cursors
+                            c.clearRender(alignX - 1, 8, 1, 8); // cleanup old cursors
                         }
                     };
                 }
@@ -250,7 +250,7 @@ public class CharacterCreatorPage extends Page {
     }
 
     private double getHeight() {
-        return HEIGHT_MIN + ((double)statsList[0].pointsAdded / 2);
+        return HEIGHT_MIN + ((double) statsList[0].pointsAdded / 2);
     }
 
     private int getWeight() {
@@ -283,6 +283,11 @@ public class CharacterCreatorPage extends Page {
     @Override
     public Color getBackgroundColor() {
         return Color.BLACK;
+    }
+
+    @Override
+    public Color getForegroundColor() {
+        return Color.WHITE;
     }
 
     @Override
