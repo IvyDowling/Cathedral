@@ -80,7 +80,7 @@ public class Controller {
     }
 
     public void attackPlayer(BodyComponent bc) {
-        cs.addAction(new Action(self, currentEnemy, self.getBodyPart(bc)));
+        cs.addAction(new Action(currentEnemy, self, self.getBodyPart(bc)));
     }
 
     public void attackEnemy(BodyComponent bc) {
@@ -144,18 +144,21 @@ public class Controller {
     private String turnDesc(Action a) {
         String out = "";
         if (a.getSpark().equals(self)) {
+            out += "You attack-\n";
             if (a.getBodyPart().isIsImpaired()) {
                 out += "Their " + a.getBodyPart().getComponent().toString() + " is impaired!";
             } else {
                 out += "You deal " + self.getDamage() + " damage to their " + a.getBodyPart().getComponent().toString();
             }
         } else {
-            out += "\nYou took " + currentEnemy.getDamage() + " damage to your " + a.getBodyPart();
+            out += "The enemy attacks-\n";
+            out += "You took " + currentEnemy.getDamage() + " damage to your " + a.getBodyPart().getComponent().toString();
         }
         return out;
     }
 
     private void getEnemyAction() {
+        //CALL ENEMY STRATEGY THING HERE!
         this.attackPlayer(BodyComponent.HEAD);
     }
 

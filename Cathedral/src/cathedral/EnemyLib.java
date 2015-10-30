@@ -16,13 +16,17 @@ public class EnemyLib {
     };
 
     public static Entity getEnemy(int i) {
-        if (i < enemyLib.length) {
+        int enemyIndex = i;
+        if (enemyIndex == 1 || enemyIndex == 2 || enemyIndex == 3) {
+            enemyIndex = 0;
+        }
+        if (enemyIndex < enemyLib.length) {
             return enemyLib[i];
         }
         return null;
     }
-    
-    public static int getLength(){
+
+    public static int getLength() {
         return enemyLib.length;
     }
 }
