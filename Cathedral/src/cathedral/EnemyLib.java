@@ -21,4 +21,8 @@ public class EnemyLib {
         }
         return null;
     }
+    
+    public static int getLength(){
+        return enemyLib.length;
+    }
 }

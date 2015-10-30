@@ -129,7 +129,7 @@ public class CharacterCreatorPage extends Page {
                     return new Command() {
                         @Override
                         public void exe(Controller c) {
-                            c.makeEntity(exportEntity());
+                            c.makeSelf(exportEntity());
                             c.setPage(new MainPage());
                         }
                     };

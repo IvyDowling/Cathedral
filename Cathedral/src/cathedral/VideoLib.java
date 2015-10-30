@@ -121,9 +121,6 @@ public class VideoLib {
             "           JO:      r5B@Bj           ",//26
             "           U@r,                      ",//27
             "           :YJ.                      " //28
-        },
-        new String[]{
-            "."
         }
     };
 

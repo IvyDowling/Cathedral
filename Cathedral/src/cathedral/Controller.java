@@ -27,24 +27,25 @@ public class Controller {
     private Entity self;
     private Entity currentEnemy;
     private Save save;
+    private int enemyIndex = 0;
 
     public Controller() {
         screen = Screen.getInstance();
         console = TextArea.getInstance();
         cs = new CombatSystem();
         console.write("Welcome to the Cathedral");
-        currentEnemy = EnemyLib.getEnemy(0);
+        currentEnemy = EnemyLib.getEnemy(enemyIndex);
     }
 
     public Entity getCurrentEnemy() {
         return currentEnemy;
     }
 
-    public void makeEntity(double h, int w, int s, int d, List<Weapon> wep) {
+    public void makeSelf(double h, int w, int s, int d, List<Weapon> wep) {
         self = new Entity(h, w, s, d, wep);
     }
 
-    public void makeEntity(Entity e) {
+    public void makeSelf(Entity e) {
         self = e;
         System.out.println(e.toString());
     }
@@ -78,8 +79,12 @@ public class Controller {
         screen.clear(x, y, w, h);
     }
 
-    public void makeNewAction(BodyPart bp, ActionExecution ae) {
-        cs.addAction(new Action(self, currentEnemy, bp, ae));
+    public void attackPlayer(BodyComponent bc) {
+        cs.addAction(new Action(self, currentEnemy, self.getBodyPart(bc)));
+    }
+
+    public void attackEnemy(BodyComponent bc) {
+        cs.addAction(new Action(self, currentEnemy, currentEnemy.getBodyPart(bc)));
     }
 
     public void setPage(Page p) {
@@ -106,11 +111,52 @@ public class Controller {
     }
 
     public boolean fireNextAction() {
-        if (!cs.isEmpty()) {
-            cs.getNextAction();
-            return true;
+        if (self != null) {
+            if (currentEnemy.getBody().isImpaired()) {
+                console.write("You defeated the enemy!");
+                enemyIndex++;
+                if (enemyIndex > EnemyLib.getLength()) {
+                    setPage(new EndPage());
+                    console.write("You have beaten the Cathedral!");
+                } else {
+                    currentEnemy = EnemyLib.getEnemy(enemyIndex);
+                }
+            }
+            if (self.getBody().isImpaired()) {
+                setPage(new EndPage());
+                console.write("You have been overcome by your wounds. You are forced to submit.");
+            }
+            if (!cs.isEmpty()) {
+                this.getEnemyAction();
+                Action a = cs.getNextAction();
+                cs.popAction();
+                console.write(turnDesc(a));
+                a = cs.getNextAction();
+                cs.popAction();
+                console.write(turnDesc(a));
+                cs.clear();
+                return true;
+            }
         }
         return false;
+    }
+
+    private String turnDesc(Action a) {
+        String out = "";
+        if (a.getSpark().equals(self)) {
+            if (a.getBodyPart().isIsImpaired()) {
+                out += "Their " + a.getBodyPart().getComponent().toString() + " is impaired!";
+            } else {
+                out += "You deal " + self.getDamage() + " damage to their " + a.getBodyPart().getComponent().toString();
+            }
+        } else {
+            out += "\nYou took " + currentEnemy.getDamage() + " damage to your " + a.getBodyPart();
+        }
+        return out;
+    }
+
+    private void getEnemyAction() {
+        this.attackPlayer(BodyComponent.HEAD);
     }
 
     public void printToConsole(String s) {
@@ -118,24 +164,29 @@ public class Controller {
     }
 
     public boolean saveGame() {
+        ObjectOutputStream oos = null;
         try {
             File f = new File("sv.dat");
             f.delete();
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("sv.dat"));
+            oos = new ObjectOutputStream(new FileOutputStream("sv.dat"));
             oos.writeUnshared(save);
-
+            oos.close();
         } catch (IOException io) {
             System.out.println("Failed to save File");
             return false;
+        } finally {
+            try {
+                oos.close();
+            } catch (Exception ignore) {
+            }
         }
         return true;
     }
 
     public boolean loadSave() {
-        try {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sv.dat"))) {
-                save = (Save) ois.readObject();
-            }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("sv.dat"))) {
+            save = (Save) ois.readObject();
+            ois.close();
         } catch (IOException ex) {
             System.out.println("couldn't load file: io\n" + ex);
             return false;

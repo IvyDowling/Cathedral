@@ -79,7 +79,7 @@ public class OpeningPage extends Page {
             "  \\_____|/_/    \\_\\  |_|    |_|  |_| |______| |_____/  |_|  \\_\\ /_/    \\_\\|______|"
         };
         Color fg = Color.BLUE;
-        Color bg = Color.LIGHT_GRAY;
+        Color bg = Color.WHITE;
         Color continueColor = Color.GRAY;
 
         if (isThereAFile()) {
@@ -104,6 +104,7 @@ public class OpeningPage extends Page {
             File f = new File(path.getFile());
             return f.canRead();
         } catch (Exception e) {
+            System.out.println("looks like there's no file, or we suck.");
             return false;
         }
     }

@@ -4,6 +4,7 @@ import asciiPanel.AsciiCharacterData;
 import asciiPanel.Render;
 import asciiPanel.TileTransformer;
 import combatsystem.BodyComponent;
+import combatsystem.BodyPart;
 import combatsystem.Weapon;
 import java.awt.Color;
 import java.util.LinkedList;
@@ -25,13 +26,6 @@ public class MainPage extends Page {
     private final int PANEL_CENTER_WIDTH = 50;
     private final int PANEL_HEIGHT = 34;
     private final int PANEL_CENTER_HEIGHT = 17;
-    private final TileTransformer highlight = new TileTransformer() {
-        @Override
-        public void transformTile(int x, int y, AsciiCharacterData data) {
-            data.backgroundColor = Color.GREEN;
-            data.foregroundColor = Color.BLACK;
-        }
-    };
     private double enemyHeight = Controller.getInstance().getCurrentEnemy().getHeight();
     private List<String> enemyWep;
     private BodyComponent focusRef;
@@ -89,6 +83,7 @@ public class MainPage extends Page {
     public Render[] getUpdateRender() {
         if (viewer.isFinished()) {
             List<Render> temp = new LinkedList<>();
+
             //ret render[]
             Render[] ret = new Render[temp.size()];
             for (int i = 0; i < temp.size(); i++) {
@@ -111,8 +106,7 @@ public class MainPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.clearAnimation();
-                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight(c.getCurrentEnemy().getBodyPart(focusRef)));
                     }
                 };
             case 38://up
@@ -120,8 +114,7 @@ public class MainPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.clearAnimation();
-                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight(c.getCurrentEnemy().getBodyPart(focusRef)));
                     }
                 };
             case 39://right
@@ -129,8 +122,7 @@ public class MainPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.clearAnimation();
-                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight(c.getCurrentEnemy().getBodyPart(focusRef)));
                     }
                 };
             case 40://down
@@ -138,15 +130,14 @@ public class MainPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.clearAnimation();
-                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight);
+                        c.addAnimation(VideoLib.getBodyComponentRange(focusRef), highlight(c.getCurrentEnemy().getBodyPart(focusRef)));
                     }
                 };
             case 32://space bar
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.printToConsole("Attack " + focusRef);
+                        c.attackEnemy(focusRef);
                     }
                 };
         }
@@ -215,6 +206,24 @@ public class MainPage extends Page {
                 focusRef = BodyComponent.RLEG;
                 break;
         }
+    }
+
+    private TileTransformer highlight(BodyPart bp) {
+        final Color c;
+        if (bp.isIsImpaired()) {
+            c = Color.RED;
+        } else if (bp.isWounded()) {
+            c = Color.ORANGE;
+        } else {
+            c = Color.BLACK;
+        }
+        return new TileTransformer() {
+            @Override
+            public void transformTile(int x, int y, AsciiCharacterData data) {
+                data.backgroundColor = Color.GREEN;
+                data.foregroundColor = c;
+            }
+        };
     }
 
     @Override

@@ -30,9 +30,14 @@ public class Screen extends JPanel {
     }
 
     public void render() {
+        //write default renders
         this.updateGameUI();
+        //write added renders
         for (Render r : renderList) {
             asciiPanel.write(r);
+        }
+        if(!animationList.isEmpty()){
+            clearAnimation();
         }
         for (Animation a : animationList) {
             asciiPanel.withEachTile(a.x, a.y, a.width, 1, a.transform);
@@ -47,8 +52,8 @@ public class Screen extends JPanel {
                 asciiPanel.getHeightInCharacters(), new TileTransformer() {
                     @Override
                     public void transformTile(int x, int y, AsciiCharacterData data) {
-                        data.backgroundColor = Color.BLACK;
-                        data.foregroundColor = Color.WHITE;
+                        data.backgroundColor = asciiPanel.getDefaultBackgroundColor();
+                        data.foregroundColor = asciiPanel.getDefaultForegroundColor();
                     }
                 });
     }
