@@ -137,7 +137,7 @@ public class MainPage extends Page {
                 return new Command() {
                     @Override
                     public void exe(Controller c) {
-                        c.attackEnemy(focusRef);
+                        c.addActionToQueue(c.getPlayerAction(focusRef));
                     }
                 };
         }

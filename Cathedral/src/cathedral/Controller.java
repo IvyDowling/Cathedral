@@ -1,11 +1,9 @@
 package cathedral;
 
-import asciiPanel.AsciiCharacterData;
 import asciiPanel.Range;
 import asciiPanel.Render;
 import asciiPanel.TileTransformer;
 import combatsystem.*;
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,12 +40,11 @@ public class Controller {
     }
 
     public void makeSelf(double h, int w, int s, int d, List<Weapon> wep) {
-        self = new Entity(h, w, s, d, wep);
+        self = new Entity("self", h, w, s, d, wep);
     }
 
     public void makeSelf(Entity e) {
         self = e;
-        System.out.println(e.toString());
     }
 
     public void addRender(Render r) {
@@ -79,12 +76,19 @@ public class Controller {
         screen.clear(x, y, w, h);
     }
 
-    public void attackPlayer(BodyComponent bc) {
-        cs.addAction(new Action(currentEnemy, self, self.getBodyPart(bc)));
+    public Action getEnemyAction() {
+        //CALL ENEMY STRATEGY HERE!
+        BodyComponent bc = BodyComponent.HEAD;
+        //
+        return new Action(currentEnemy, self, self.getBodyPart(bc));
     }
 
-    public void attackEnemy(BodyComponent bc) {
-        cs.addAction(new Action(self, currentEnemy, currentEnemy.getBodyPart(bc)));
+    public Action getPlayerAction(BodyComponent bc) {
+        return new Action(self, currentEnemy, currentEnemy.getBodyPart(bc));
+    }
+
+    public void addActionToQueue(Action a) {
+        cs.addAction(a);
     }
 
     public void setPage(Page p) {
@@ -126,22 +130,31 @@ public class Controller {
                 setPage(new EndPage());
                 console.write("You have been overcome by your wounds. You are forced to submit.");
             }
-            if (!cs.isEmpty()) {
-                this.getEnemyAction();
-                Action a = cs.getNextAction();
-                cs.popAction();
-                console.write(turnDesc(a));
-                a = cs.getNextAction();
-                cs.popAction();
-                console.write(turnDesc(a));
-                cs.clear();
-                return true;
+        }
+        return manageQueue();
+    }
+
+    private boolean manageQueue() {
+        if (!cs.isEmpty()) { //The player has made an action
+            cs.addAction(this.getEnemyAction()); //add the enemy's action
+            //action 1
+            Action a = cs.pop();
+            if (a != null) {
+                console.write(getTurnDesc(a));
             }
+            //action 2
+            a = cs.pop();
+            if (a != null) {
+                console.write(getTurnDesc(a));
+            }
+            //clear all other queued actions
+            cs.clear();
+            return true;
         }
         return false;
     }
 
-    private String turnDesc(Action a) {
+    private String getTurnDesc(Action a) {
         String out = "";
         if (a.getSpark().equals(self)) {
             out += "You attack-\n";
@@ -155,11 +168,6 @@ public class Controller {
             out += "You took " + currentEnemy.getDamage() + " damage to your " + a.getBodyPart().getComponent().toString();
         }
         return out;
-    }
-
-    private void getEnemyAction() {
-        //CALL ENEMY STRATEGY THING HERE!
-        this.attackPlayer(BodyComponent.HEAD);
     }
 
     public void printToConsole(String s) {
